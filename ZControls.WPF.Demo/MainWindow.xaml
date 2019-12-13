@@ -7,12 +7,22 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <TreeView>
+        <TreeView Name="Ctrl_TagsTree">
             <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate DataType="">
-                    
-                </HierarchicalDataTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Path=Items}">
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox IsChecked="{Binding Path=IsSelected}" Margin="2,0" VerticalAlignment="Center"/>
+                        <Label Content="📁" Foreground="#FFFF6800" VerticalAlignment="Center" Padding="-1" Margin="2,0"/>
+                        <TextBlock Text="{Binding Path=Name}" VerticalAlignment="Center"/>
+                    </StackPanel>                    
+                </HierarchicalDataTemplate>                
             </TreeView.ItemTemplate>
+            <TreeView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Добавить папку"/>
+                    <MenuItem Header="Добавить тег"/>
+                </ContextMenu>
+            </TreeView.ContextMenu>
         </TreeView>
     </Grid>
 </Window>
