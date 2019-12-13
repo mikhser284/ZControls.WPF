@@ -6,9 +6,9 @@ namespace ZControls.WPF.Demo.DataModel
 {
     public interface ITagTreeItem
     {
-        String Name { get; }
+        String Name { get; set; }
 
-        Boolean? IsSelected { get; }
+        Boolean? IsSelected { get; set; }
 
         ITagTreeItem Parent { get; set; }
     }

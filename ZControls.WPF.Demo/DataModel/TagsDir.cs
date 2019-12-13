@@ -23,10 +23,61 @@ namespace ZControls.WPF.Demo.DataModel
             set
             {
                 _isSelected = value;
+                ChangeDescendantsSelection();
+                ChangeAscendantsSelection();
                 OnPropertyChanged(nameof(IsSelected));
             }
         }
 
+
+        public void ChangeDescendantsSelection()
+        {
+            var children = Items;
+            if (Items == null || Items.Count == 0) return;
+            foreach(var item in children) item.IsSelected = IsSelected;
+        }
+         
+        public void ChangeAscendantsSelection()
+        {
+            TagsDir curentDir = this;
+            TagsDir parentDir = curentDir.Parent as TagsDir;
+            while(curentDir != null && parentDir != null)
+            {
+                Boolean? selection = curentDir.IsSelected;
+                if(selection != null)
+                {
+                    Boolean thereAreCheckedItems = false;
+                    Boolean thereAreUncheckedItems = false;
+                    Boolean thereAreUndefinedItems = false;
+                    
+                    foreach(var item in parentDir.Items)
+                    {
+                        switch(item.IsSelected)
+                        {
+                            case true:
+                                thereAreCheckedItems = true;
+                                break;
+                            case false:
+                                thereAreUncheckedItems = true;
+                                break;
+                            case null:
+                                thereAreUndefinedItems = true;
+                                break;
+                        }
+                        Int32 diferentItemsCount = (thereAreCheckedItems ? 1 : 0) + (thereAreUncheckedItems ? 1 : 0) + (thereAreUndefinedItems ? 1 : 0);
+                        if(diferentItemsCount > 1)
+                        {
+                            parentDir.IsSelected = null;
+                            break;
+                        }
+                    }
+                }
+                parentDir.IsSelected = selection;
+                //
+                curentDir = curentDir.Parent as TagsDir;                
+                parentDir = curentDir?.Parent as TagsDir;
+            }
+        }
 
         private String _name;
 
@@ -72,7 +123,7 @@ namespace ZControls.WPF.Demo.DataModel
         {
             Items = new ObservableCollection<ITagTreeItem>();
             Name = name;
-            IsSelected = null;
+            IsSelected = false;
         }
 
         public TagsDir AddDir(String name)
