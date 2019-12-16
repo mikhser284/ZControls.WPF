@@ -8,8 +8,18 @@ namespace ZControls.WPF.Demo.DataModel
 
     public class Tag : ITagTreeItem, INotifyPropertyChanged
     {
-        public Boolean? _isSelected { get; set; }
+        private Int32 _id;
+        public Int32 Id
+        {
+            get { return _id; }
+            private set
+            {
+                _id = value;
+                OnPropertyChanged(nameof(Id));
+            }
+        }
 
+        private Boolean? _isSelected;
         public Boolean? IsSelected
         {
             get { return _isSelected; }
@@ -20,8 +30,7 @@ namespace ZControls.WPF.Demo.DataModel
             }
         }
 
-        public String _name { get; set; }
-        
+        private String _name;
         public String Name
         {
             get { return _name; }
@@ -32,8 +41,7 @@ namespace ZControls.WPF.Demo.DataModel
             }
         }
 
-        public ETagState _state { get; set; }
-
+        private ETagState _state;
         public ETagState State
         {
             get { return _state; }
@@ -44,10 +52,20 @@ namespace ZControls.WPF.Demo.DataModel
             }
         }
 
-        public ITagTreeItem Parent { get; set; }
-
-        public Tag(String name, ETagState state = ETagState.Undefined)
+        private ITagTreeItem _parent;
+        public ITagTreeItem Parent
         {
+            get { return _parent; }
+            set
+            {
+                _parent = value;
+                OnPropertyChanged(nameof(Parent));
+            }
+        }
+
+        internal Tag(Int32 id, String name, ETagState state = ETagState.Undefined)
+        {
+            _id = id;
             _name = name;
             _state = state;
             _isSelected = false;

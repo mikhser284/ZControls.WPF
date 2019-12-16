@@ -4,25 +4,57 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZControls.WPF.Demo"
+        
+        xmlns:ctrl="clr-namespace:ZControls.WPF.Demo.UserControls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="700" Width="900" Background="#5D6B99">
+    
+    
+    
     <Grid>
-        <TreeView Name="Ctrl_TagsTree">
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding Path=Items}">
-                    <StackPanel Orientation="Horizontal">
-                        <CheckBox IsChecked="{Binding Path=IsSelected}" Margin="2,0" VerticalAlignment="Center"/>
-                        <Label Content="📁" Foreground="#FFFF6800" VerticalAlignment="Center" Padding="-1" Margin="2,0"/>
-                        <TextBlock Text="{Binding Path=Name}" VerticalAlignment="Center"/>
-                    </StackPanel>                    
-                </HierarchicalDataTemplate>                
-            </TreeView.ItemTemplate>
-            <TreeView.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Добавить папку"/>
-                    <MenuItem Header="Добавить тег"/>
-                </ContextMenu>
-            </TreeView.ContextMenu>
-        </TreeView>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="100"/>
+            <ColumnDefinition Width="Auto" MinWidth="3"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" MinHeight="20"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" MinHeight="20"/>
+        </Grid.RowDefinitions>
+
+        <GridSplitter Grid.Column="1" Grid.Row="1" Background="#5D6B99" Width="5" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
+
+        <ctrl:TagsTree Grid.Column="0" Grid.Row="1"/>
+
+        <Grid Grid.Column="2" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" MinHeight="10"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <ScrollViewer Grid.Column="0" Grid.Row="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <StackPanel Orientation="Horizontal" Background="#CCD5F0">
+                    <ToggleButton x:Name="UseTags" Content="Use tags" Margin="2" Click="UseTags_Click"/>
+                </StackPanel>
+            </ScrollViewer>
+            <DataGrid x:Name="Ctrl_Data" Grid.Column="0" Grid.Row="1" AutoGenerateColumns="False"
+                      GridLinesVisibility="Vertical"
+                      VerticalGridLinesBrush="DarkGray"
+                      AlternatingRowBackground="#EDEDED">
+                <DataGrid.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#BFCDDB"/>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#99B4D1"/>                    
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn Binding="{Binding Path=IsSelected}" Header="Sel."/>
+                    <DataGridTextColumn Binding="{Binding Path=Name}" Header="Name"/>
+                    <DataGridTextColumn Binding="{Binding Path=TagsNames}" Header="Tags"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
     </Grid>
 </Window>

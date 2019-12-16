@@ -1,0 +1,102 @@
+﻿<UserControl x:Class="ZControls.WPF.Demo.UserControls.TagsTree"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ZControls.WPF.Demo.UserControls"
+             xmlns:dm="clr-namespace:ZControls.WPF.Demo.DataModel"             
+             mc:Ignorable="d" 
+             d:DesignHeight="150" d:DesignWidth="250">
+
+    <UserControl.Resources>
+        <local:ValConverter_EtagState_Brush x:Key="valConverter_ETagState_Brush"/>
+        <local:ValConverter_ETagState_FontWeight x:Key="ValConverter_ETagState_FontWeight"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" MinHeight="20"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="0" Background="#CCD5F0">
+                <Button x:Name="AddItem" Content="+" Margin="5,2,2,2" Height="20" Width="20" Click="AddItem_Click"/>
+                <Button x:Name="DeleteItem" Content="x" Margin="2" Height="20" Width="20" Click="DeleteItem_Click"/>
+                <Button x:Name="EditItem" Content="/" Margin="2,2,5,2" Height="20" Width="20" Click="EditItem_Click"/>
+
+                <Button x:Name="MarkAsIncludable" Content="Incl." Margin="5,2,2,2" Height="20" Click="MarkAsIncludable_Click"/>
+                <Button x:Name="MarkAsExcludable" Content="Excl." Margin="2" Height="20" Click="MarkAsExcludable_Click"/>
+                <Button x:Name="MarkAsNone" Content="Res." Margin="2,2,5,2" Height="20" Click="MarkAsNone_Click"/>
+
+                <Button x:Name="Link" Content="Link" Margin="5,2,2,2" Height="20" Click="Link_Click"/>
+                <Button x:Name="UnLink" Content="Unlink" Margin="2,2,5,2" Height="20" Click="UnLink_Click"/>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <TreeView Name="Ctrl_TagsTree" Grid.Column="0" Grid.Row="1">
+
+            <TreeView.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#BFCDDB"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#99B4D1"/>
+                <HierarchicalDataTemplate DataType="{x:Type dm:TagsDir}" ItemsSource="{Binding Path=Items}">
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox IsChecked="{Binding Path=IsSelected}" Margin="2,0" VerticalAlignment="Center"
+                                      Focusable="False"
+                                      Click="TagsTreeItem_Click"/>
+                        <Label Content="📁" Foreground="Gray" VerticalAlignment="Center" Padding="-1" Margin="2,0"/>
+                        <TextBlock Text="{Binding Path=Name}" Foreground="Gray" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+                <DataTemplate DataType="{x:Type dm:Tag}">
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox IsChecked="{Binding Path=IsSelected}" Margin="2,0" VerticalAlignment="Center"
+                                      Focusable="False"
+                                      Click="TagsTreeItem_Click"/>
+                        <Label Content="🏷" VerticalAlignment="Center" Padding="-1" Margin="2,0"
+                                   Foreground="{Binding Path=State, Converter={StaticResource valConverter_ETagState_Brush}}" />
+                        <TextBox VerticalAlignment="Center"
+                                       Text="{Binding Path=Name}"
+                                       Foreground="{Binding Path=State, Converter={StaticResource valConverter_ETagState_Brush}}"
+                                       FontWeight="{Binding Path=State, Converter={StaticResource ValConverter_ETagState_FontWeight}}"
+                                       />
+                    </StackPanel>
+                </DataTemplate>
+            </TreeView.Resources>
+            <TreeView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Развернуть">
+                        <MenuItem Header="Развернуть все" Command="local:CommandsOfTagsTree.ExpandAll"/>
+                        <MenuItem Header="Развернуть это дерево" Command="local:CommandsOfTagsTree.ExpandTree"/>
+                    </MenuItem>
+                    <MenuItem Header="Свернуть">
+                        <MenuItem Header="Свернуть все" Command="local:CommandsOfTagsTree.ColapseAll"/>
+                        <MenuItem Header="Свернуть все кроме этого дерева" Command="local:CommandsOfTagsTree.ColapseAllButThisTree"/>
+                        <MenuItem Header="Свернуть все кроме этой ветки" Command="local:CommandsOfTagsTree.ColapseAllButThisBranch"/>
+                        <MenuItem Header="Свернуть это дерево" Command="local:CommandsOfTagsTree.ColapseTree"/>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem Header="Установить метку выделения" Command="local:CommandsOfTagsTree.SetCheckMark"/>
+                    <MenuItem Header="Снять метку выделения" Command="local:CommandsOfTagsTree.ClearCheckMark"/>
+                    <MenuItem Header="Инвертировать метку выделения" Command="local:CommandsOfTagsTree.InvertCheckMark"/>
+                    <Separator/>
+                    <MenuItem Header="Включать" Command="local:CommandsOfTagsTree.CheckedTagsStateAsIncluded"/>
+                    <MenuItem Header="Исключать" Command="local:CommandsOfTagsTree.CheckedTagsStateAsExcluded"/>
+                    <MenuItem Header="Не задано" Command="local:CommandsOfTagsTree.CheckedTagsStateAsNone"/>
+                    <Separator/>
+                    <MenuItem Header="Добавить папку" Command="local:CommandsOfTagsTree.AddDir"/>
+                    <MenuItem Header="Добавить тег" Command="local:CommandsOfTagsTree.AddTag"/>
+                    <MenuItem Header="Редактировать елемент" Command="local:CommandsOfTagsTree.EditItems"/>
+                    <MenuItem Header="Удаление">
+                        <MenuItem Header="Удалить отмеченные елементы" Command="local:CommandsOfTagsTree.DeleteCheckedItems"/>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem Header="Связать" Command="local:CommandsOfTagsTree.BindItem"/>
+                    <MenuItem Header="Отвязать" Command="local:CommandsOfTagsTree.UnbindItem"/>
+                </ContextMenu>
+            </TreeView.ContextMenu>
+        </TreeView>
+    </Grid>
+</UserControl>

@@ -12,39 +12,52 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using ZControls.WPF.Demo.Aux;
 using ZControls.WPF.Demo.DataModel;
 
 namespace ZControls.WPF.Demo
 {
     public partial class MainWindow : Window
     {
+        
+
         public MainWindow()
         {
             InitializeComponent();
 
-            TagsTree tTree = new TagsTree();
-            tTree
-                .AddDir("Dir A")
-                .AddDirAndDown("Dir B")
-                    .AddDirAndDown("Dir B-B")
-                    .AddTag("Tag B1")
-                    .AddTag("Tag B2")
-                    .AddTagAndUp("Tag B3")
-                .AddDir("Dir C")
-                .AddDirAndDown("Dir D")
-                    .AddDirAndDown("Dir D-A")
-                        .AddTag("Tag D1")
-                        .AddTagAndUp("Tag D2")
-                    .AddDir("Dir D-A")
-                    ;
-            tTree
-                .AddDir("Dir C")
-                .AddTag("Tag B1")
-                .AddTag("Tag B2")
-                .AddTag("Tag B3");
-            //
-            Ctrl_TagsTree.ItemsSource = tTree.Items;
+            List<DataItem> dataItems = new List<DataItem>
+            {
+                new DataItem("Data item 001"),
+                new DataItem("Data item 002"),
+                new DataItem("Data item 003"),
+                new DataItem("Data item 004"),
+                new DataItem("Data item 005"),
+                new DataItem("Data item 006"),
+                new DataItem("Data item 007"),
+                new DataItem("Data item 008"),
+                new DataItem("Data item 009"),
+                new DataItem("Data item 010"),
+                new DataItem("Data item 011"),
+                new DataItem("Data item 012"),
+                new DataItem("Data item 013"),
+                new DataItem("Data item 014"),
+                new DataItem("Data item 015"),
+                new DataItem("Data item 016"),
+                new DataItem("Data item 017"),
+                new DataItem("Data item 018"),
+                new DataItem("Data item 019"),
+                new DataItem("Data item 020"),
+                new DataItem("Data item 021"),
+                new DataItem("Data item 022"),
+            };
+            Ctrl_Data.ItemsSource = dataItems;            
         }
+
+
+        private void UseTags_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }

@@ -3,21 +3,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text;
 
-namespace ZControls.WPF.Demo.DataModel
+namespace ZControls.WPF.Demo.Aux
 {
-    public enum Move
+    public class DataItem : INotifyPropertyChanged
     {
-        Up = -1,
-        No = 0,
-        Down = 1
-    }
-
-    public class TagsDir : ITagTreeItem, INotifyPropertyChanged
-    {
-        private Boolean? _isSelected;
-
-        public Boolean? IsSelected
+        private Boolean _isSelected { get; set; }
+        public Boolean IsSelected
         {
             get { return _isSelected; }
             set
@@ -27,8 +20,7 @@ namespace ZControls.WPF.Demo.DataModel
             }
         }
 
-        private String _name;
-
+        private String _name { get; set; }
         public String Name
         {
             get { return _name; }
@@ -39,39 +31,30 @@ namespace ZControls.WPF.Demo.DataModel
             }
         }
 
+        public HashSet<Int32> _tagsIds { get; set; }
 
-        private ObservableCollection<ITagTreeItem> _items;
-
-        public ObservableCollection<ITagTreeItem> Items
+        private String _tagsNames { get; set; }
+        public String TagsNames
         {
-            get { return _items; }
+            get { return _tagsNames; }
             set
             {
-                _items = value;
-                OnPropertyChanged(nameof(Items));
+                _tagsNames = value;
+                OnPropertyChanged(nameof(TagsNames));
             }
         }
 
-        private ITagTreeItem _parent;
-
-        public ITagTreeItem Parent
+        public DataItem(String name)
         {
-            get { return _parent; }
-            set
-            {
-                _parent = value;
-                OnPropertyChanged(nameof(Parent));
-            }
+            _name = name;
+            _tagsIds = new HashSet<int>();
         }
 
-
-        public TagsDir(String name)
+        public override string ToString()
         {
-            Items = new ObservableCollection<ITagTreeItem>();
-            Name = name;
-            IsSelected = false;
+            return Name;
         }
-        
+
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName]string prop = "")
         {
