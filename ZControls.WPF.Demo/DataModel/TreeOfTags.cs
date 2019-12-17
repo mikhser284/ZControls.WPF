@@ -143,6 +143,17 @@ namespace ZControls.WPF.Demo.DataModel
             }
         }
 
+        public void ForEach(Func<ITagTreeItem, Boolean> selector, Action<ITagTreeItem> action)
+        {
+            Stack<ITagTreeItem> stack = new Stack<ITagTreeItem>(Items);
+            while (stack.Count > 0)
+            {
+                ITagTreeItem treeItem = stack.Pop();
+                if (treeItem is TagsDir dir) foreach (var dirItem in dir.Items) stack.Push(dirItem);
+                if(selector(treeItem)) action(treeItem);
+            }
+        }
+
         private static Boolean IsTreeItemSelected(ITagTreeItem treeItem) => treeItem.IsSelected == true || treeItem.IsSelected == null;
 
         public TagsDir AddDir(String dirName, TagsDir parentDir = null)

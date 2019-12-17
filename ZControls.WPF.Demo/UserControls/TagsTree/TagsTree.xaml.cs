@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,8 +16,84 @@ using ZControls.WPF.Demo.DataModel;
 
 namespace ZControls.WPF.Demo.UserControls
 {
-    public partial class TagsTree : UserControl
+    public partial class TagsTree
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName]string prop = "")
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+        }
+
+        private Boolean _isInEditMode = false;
+        public Boolean IsInEditMode
+        {
+            get { return _isInEditMode; }
+            set
+            {
+                _isInEditMode = value;
+                OnPropertyChanged(nameof(IsInEditMode));
+            }
+        }
+
+        String oldText;
+
+        private void TextBox_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            var tb = sender as TextBox;
+            if (tb.IsVisible)
+            {
+                tb.Focus();
+                tb.SelectAll();
+                oldText = tb.Text;
+            }
+        }
+
+        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter) IsInEditMode = false;
+            if (e.Key == Key.Escape)
+            {
+                var tb = sender as TextBox;
+                tb.Text = oldText;
+                IsInEditMode = false;
+            }            
+        }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            IsInEditMode = false;
+        }
+
+        private void Ctrl_TagsTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            IsInEditMode = false;
+        }
+
+        private void TextBlock_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2 && FindTreeItem(e.OriginalSource as DependencyObject).IsSelected)
+            {
+                IsInEditMode = true;
+                e.Handled = true;
+            }
+        }
+
+
+        static TreeViewItem FindTreeItem(DependencyObject source)
+        {
+            while (source != null && !(source is TreeViewItem)) source = VisualTreeHelper.GetParent(source);
+            return source as TreeViewItem;
+        }
+
+    }
+
+    public partial class TagsTree : UserControl, INotifyPropertyChanged
+    {
+        
+
+        private 
+
         TreeOfTags tTree = new TreeOfTags();
 
         public TagsTree()
@@ -139,34 +217,49 @@ namespace ZControls.WPF.Demo.UserControls
     {
         private void CommandExpandAll_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            Stack<TreeViewItem> stack = new Stack<TreeViewItem>();
 
+            foreach(var item in tTree.Items)
+            {
+                TreeViewItem treeViewItem = Ctrl_TagsTree.ItemContainerGenerator.ContainerFromItem(item) as TreeViewItem;
+                if (treeViewItem != null) treeViewItem.ExpandSubtree();
+            }
         }
 
         private void CommandExpandAll_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = false;
+            e.CanExecute = true;
         }
 
 
         private void CommandExpandTree_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-
+            TreeViewItem treeViewItem = Ctrl_TagsTree.ItemContainerGenerator.ContainerFromItem(Ctrl_TagsTree.SelectedItem) as TreeViewItem;
+            if (treeViewItem != null) treeViewItem.ExpandSubtree();
         }
 
         private void CommandExpandTree_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = false;
+            e.CanExecute = true;
         }
 
 
         private void CommandColapseAll_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-
+            TreeViewItem treeViewItem = Ctrl_TagsTree.ItemContainerGenerator.ContainerFromItem(Ctrl_TagsTree.SelectedItem) as TreeViewItem;
+            foreach(var item in treeViewItem.Items)
+            {
+                TreeViewItem child = item as TreeViewItem;
+                
+                if (child == null)
+                    child = treeViewItem.ItemContainerGenerator.ContainerFromItem(treeViewItem) as TreeViewItem;
+                if (child != null) child.IsExpanded = false;
+            }
         }
 
         private void CommandColapseAll_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = false;
+            e.CanExecute = true;
         }
 
 
@@ -206,22 +299,34 @@ namespace ZControls.WPF.Demo.UserControls
         {
             ITagTreeItem tagsTreeItem = Ctrl_TagsTree.SelectedItem as ITagTreeItem;            
             while(tagsTreeItem != null && tagsTreeItem.GetType() != typeof(TagsDir)) tagsTreeItem = tagsTreeItem.Parent;
+            TagsDir newDir = tTree.AddDir("New dir", tagsTreeItem as TagsDir);
+            //
+            TreeViewItem treeViewItem = Ctrl_TagsTree.ItemContainerGenerator.ContainerFromItem(tagsTreeItem) as TreeViewItem;
 
-            var tvi1 = Ctrl_TagsTree.ItemContainerGenerator.ContainerFromItem(tagsTreeItem) as TreeViewItem;
-            if (tvi1 != null)
+            var container = Ctrl_TagsTree.ItemContainerGenerator.ContainerFromItem(tagsTreeItem);
+            if (treeViewItem != null)
             {
-                tvi1.IsExpanded = true;
-                TagsDir newDir = tTree.AddDir("New dir", tagsTreeItem as TagsDir);
-                var tvi = tvi1.ItemContainerGenerator.ContainerFromItem(newDir) as TreeViewItem;
-                if (tvi != null) tvi.IsSelected = true;
+                treeViewItem.Tag = newDir;
+                treeViewItem.IsExpanded = true;
+                var obj = treeViewItem.DataContext;
+                var tvi = treeViewItem.ItemContainerGenerator.ContainerFromItem(newDir) as TreeViewItem;
+                //MessageBox.Show($"{tvi != null}");
+                if (tvi != null)
+                {
+                    tvi.IsSelected = true;
+                }
             }
             else
-            {
-                TagsDir newDir = tTree.AddDir("New directory", tagsTreeItem as TagsDir);
+            {                
                 var tvi = Ctrl_TagsTree.ItemContainerGenerator.ContainerFromItem(newDir) as TreeViewItem;
-                if(tvi != null) tvi.IsSelected = true;
+                if (tvi != null)
+                {
+                    tvi.IsSelected = true;
+                    
+                }
             }
         }
+
 
         private void CommandAddDir_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
@@ -248,23 +353,30 @@ namespace ZControls.WPF.Demo.UserControls
 
         private void CommandEditItems_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-
+            IsInEditMode = true;
         }
 
         private void CommandEditItems_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = false;
+            e.CanExecute = true;
         }
 
 
         private void CommandDeleteCheckedItems_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-
+            tTree.ForEach(x => x.IsSelected == true, (x) => { if (x.Parent is TagsDir dir) dir.Items.Remove(x); x.Parent = null; });
         }
 
         private void CommandDeleteCheckedItems_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = false;
+            Boolean thereAreSelectedItems = false;
+            foreach(var item in tTree.Items)
+            {
+                if(item.IsSelected == false) continue;
+                thereAreSelectedItems = true;
+                break;
+            }
+            e.CanExecute = thereAreSelectedItems;
         }
 
 

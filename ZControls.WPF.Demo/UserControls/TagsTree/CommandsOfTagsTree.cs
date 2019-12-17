@@ -49,13 +49,13 @@ namespace ZControls.WPF.Demo.UserControls
             = new RoutedUICommand("Добавить папку"
             , nameof(AddDir)
             , typeof(CommandsOfTagsTree)
-            , new InputGestureCollection() { new KeyGesture(Key.N, ModifierKeys.Control | ModifierKeys.Shift) });
+            , new InputGestureCollection() { new KeyGesture(Key.End, ModifierKeys.Control | ModifierKeys.Shift) });
 
         public static readonly RoutedCommand AddTag
             = new RoutedUICommand("Добавить тег"
             , nameof(AddTag)
             , typeof(CommandsOfTagsTree)
-            , new InputGestureCollection() { new KeyGesture(Key.N, ModifierKeys.Control) });
+            , new InputGestureCollection() { new KeyGesture(Key.End, ModifierKeys.Control) });
 
         public static readonly RoutedCommand EditItems
             = new RoutedUICommand("Редактировать елемент"

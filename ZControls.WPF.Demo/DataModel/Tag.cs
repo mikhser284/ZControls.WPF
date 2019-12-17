@@ -12,7 +12,7 @@ namespace ZControls.WPF.Demo.DataModel
         public Int32 Id
         {
             get { return _id; }
-            private set
+            set
             {
                 _id = value;
                 OnPropertyChanged(nameof(Id));
@@ -37,7 +37,7 @@ namespace ZControls.WPF.Demo.DataModel
             set
             {
                 _name = value;
-                OnPropertyChanged(nameof(_name));
+                OnPropertyChanged(nameof(Name));
             }
         }
 
@@ -77,5 +77,7 @@ namespace ZControls.WPF.Demo.DataModel
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
+
+        
     }
 }

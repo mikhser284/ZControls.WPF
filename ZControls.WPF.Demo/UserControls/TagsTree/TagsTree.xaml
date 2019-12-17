@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ZControls.WPF.Demo.UserControls"
-             xmlns:dm="clr-namespace:ZControls.WPF.Demo.DataModel"             
+             xmlns:dm="clr-namespace:ZControls.WPF.Demo.DataModel"
+             x:Name="TreeOfTags"
              mc:Ignorable="d" 
              d:DesignHeight="150" d:DesignWidth="250">
 
@@ -36,33 +37,72 @@
             </StackPanel>
         </ScrollViewer>
 
-        <TreeView Name="Ctrl_TagsTree" Grid.Column="0" Grid.Row="1">
+        <TreeView Name="Ctrl_TagsTree" Grid.Column="0" Grid.Row="1"
+                  SelectedItemChanged="Ctrl_TagsTree_SelectedItemChanged">
 
             <TreeView.Resources>
                 <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#BFCDDB"/>
                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#99B4D1"/>
                 <HierarchicalDataTemplate DataType="{x:Type dm:TagsDir}" ItemsSource="{Binding Path=Items}">
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" MinHeight="18">
                         <CheckBox IsChecked="{Binding Path=IsSelected}" Margin="2,0" VerticalAlignment="Center"
                                       Focusable="False"
                                       Click="TagsTreeItem_Click"/>
                         <Label Content="📁" Foreground="Gray" VerticalAlignment="Center" Padding="-1" Margin="2,0"/>
-                        <TextBlock Text="{Binding Path=Name}" Foreground="Gray" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="TagsDirNotEditableTitle"
+                                   Text="{Binding Path=Name}"
+                                   MouseLeftButtonDown="TextBlock_MouseLeftButtonUp"
+                                   VerticalAlignment="Center"
+                                   Foreground="Gray"/>
+                        <TextBox x:Name="TagsDirEditableTitle" Visibility="Collapsed"
+                                 Text="{Binding Path=Name, UpdateSourceTrigger=LostFocus}"
+                                 VerticalAlignment="Center"
+                                 LostFocus="TextBox_LostFocus"
+                                 IsVisibleChanged="TextBox_IsVisibleChanged"
+                                 KeyDown="TextBox_KeyDown"/>
                     </StackPanel>
+                    <HierarchicalDataTemplate.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}}" Value="True"/>
+                                <Condition Binding="{Binding Path=IsInEditMode, ElementName=TreeOfTags}" Value="True"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="TagsDirNotEditableTitle" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="TagsDirEditableTitle" Property="Visibility" Value="Visible"/>
+                        </MultiDataTrigger>
+                    </HierarchicalDataTemplate.Triggers>
                 </HierarchicalDataTemplate>
                 <DataTemplate DataType="{x:Type dm:Tag}">
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" MinHeight="18">
                         <CheckBox IsChecked="{Binding Path=IsSelected}" Margin="2,0" VerticalAlignment="Center"
-                                      Focusable="False"
+                                      Focusable="False"                                  
                                       Click="TagsTreeItem_Click"/>
                         <Label Content="🏷" VerticalAlignment="Center" Padding="-1" Margin="2,0"
                                    Foreground="{Binding Path=State, Converter={StaticResource valConverter_ETagState_Brush}}" />
-                        <TextBlock VerticalAlignment="Center"
-                                       Text="{Binding Path=Name}"
-                                       Foreground="{Binding Path=State, Converter={StaticResource valConverter_ETagState_Brush}}"
-                                       FontWeight="{Binding Path=State, Converter={StaticResource ValConverter_ETagState_FontWeight}}"
-                                       />
+                        <TextBlock x:Name="TagNotEditableTitle"
+                                   Text="{Binding Path=Name}"
+                                   MouseLeftButtonDown="TextBlock_MouseLeftButtonUp"
+                                   VerticalAlignment="Center"
+                                   Foreground="{Binding Path=State, Converter={StaticResource valConverter_ETagState_Brush}}"
+                                   FontWeight="{Binding Path=State, Converter={StaticResource ValConverter_ETagState_FontWeight}}"/>
+                        <TextBox x:Name="TagEditableTitle" Visibility="Collapsed"
+                                 Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"
+                                 VerticalAlignment="Center"
+                                 LostFocus="TextBox_LostFocus"
+                                 IsVisibleChanged="TextBox_IsVisibleChanged"
+                                 KeyDown="TextBox_KeyDown"/>
                     </StackPanel>
+                    <DataTemplate.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}}" Value="True"/>
+                                <Condition Binding="{Binding Path=IsInEditMode, ElementName=TreeOfTags}" Value="True"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="TagNotEditableTitle" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="TagEditableTitle" Property="Visibility" Value="Visible"/>
+                        </MultiDataTrigger>
+                    </DataTemplate.Triggers>
+                    
                 </DataTemplate>
             </TreeView.Resources>
             <TreeView.ContextMenu>
