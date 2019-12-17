@@ -7,7 +7,7 @@
              xmlns:dm="clr-namespace:ZControls.WPF.Demo.DataModel"
              x:Name="TreeOfTags"
              mc:Ignorable="d" 
-             d:DesignHeight="150" d:DesignWidth="250">
+             d:DesignHeight="150" d:DesignWidth="350">
 
     <UserControl.Resources>
         <local:ValConverter_EtagState_Brush x:Key="valConverter_ETagState_Brush"/>
@@ -23,16 +23,35 @@
         </Grid.RowDefinitions>
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="0" Background="#CCD5F0">
-                <Button x:Name="AddItem" Content="+" Margin="5,2,2,2" Height="20" Width="20" Click="AddItem_Click"/>
-                <Button x:Name="DeleteItem" Content="x" Margin="2" Height="20" Width="20" Click="DeleteItem_Click"/>
-                <Button x:Name="EditItem" Content="/" Margin="2,2,5,2" Height="20" Width="20" Click="EditItem_Click"/>
+                <Button x:Name="AddTag" Content="➕📁" Margin="5,2,2,2" Height="20"
+                        Command="local:CommandsOfTagsTree.AddDir" CommandTarget="{Binding ElementName=Ctrl_TagsTree}"
+                        ToolTip="Создать папку"/>
+                <Button x:Name="AddTagsDir" Content="➕🏷" Margin="2" Height="20"
+                        Command="local:CommandsOfTagsTree.AddTag" CommandTarget="{Binding ElementName=Ctrl_TagsTree}"
+                        ToolTip="Создать тег"/>
+                <Button x:Name="DeleteItem" Content="❌" Margin="2" Height="20" Width="20" 
+                        Command="local:CommandsOfTagsTree.DeleteCheckedItems" CommandTarget="{Binding ElementName=Ctrl_TagsTree}"
+                        ToolTip="Удалить отмеченные елемены"/>
+                <Button x:Name="EditItem" Content="✏" Margin="2,2,5,2" Height="20" 
+                        Command="local:CommandsOfTagsTree.EditItems" CommandTarget="{Binding ElementName=Ctrl_TagsTree}"
+                        ToolTip="Переименовать выбранный елемент"/>
 
-                <Button x:Name="MarkAsIncludable" Content="Incl." Margin="5,2,2,2" Height="20" Click="MarkAsIncludable_Click"/>
-                <Button x:Name="MarkAsExcludable" Content="Excl." Margin="2" Height="20" Click="MarkAsExcludable_Click"/>
-                <Button x:Name="MarkAsNone" Content="Res." Margin="2,2,5,2" Height="20" Click="MarkAsNone_Click"/>
+                <Button x:Name="MarkAsIncludable" Content="🔍➕" Margin="5,2,2,2" Height="20" 
+                        Command="local:CommandsOfTagsTree.CheckedTagsStateAsIncluded" CommandTarget="{Binding ElementName=Ctrl_TagsTree}"
+                        ToolTip="При поиске включать елементы с отмеченными тегами"/>
+                <Button x:Name="MarkAsExcludable" Content="🔍➖" Margin="2" Height="20" 
+                        Command="local:CommandsOfTagsTree.CheckedTagsStateAsExcluded" CommandTarget="{Binding ElementName=Ctrl_TagsTree}"
+                        ToolTip="При поиске исключать елементы с отмеченными тегами"/>
+                <Button x:Name="MarkAsNone" Content="Res." Margin="2,2,5,2" Height="20" 
+                        Command="local:CommandsOfTagsTree.CheckedTagsStateAsNone" CommandTarget="{Binding ElementName=Ctrl_TagsTree}"
+                        ToolTip="Сбросить настройки поиска"/>
 
-                <Button x:Name="Link" Content="Link" Margin="5,2,2,2" Height="20" Click="Link_Click"/>
-                <Button x:Name="UnLink" Content="Unlink" Margin="2,2,5,2" Height="20" Click="UnLink_Click"/>
+                <Button x:Name="Link" Content="🔗➕" Margin="5,2,2,2" Height="20" 
+                        Command="local:CommandsOfTagsTree.BindItem" CommandTarget="{Binding ElementName=Ctrl_TagsTree}"
+                        ToolTip="Установить связь между отмеченными тегами и выбранными елементами"/>
+                <Button x:Name="UnLink" Content="🔗➖" Margin="2,2,5,2" Height="20" 
+                        Command="local:CommandsOfTagsTree.UnbindItem" CommandTarget="{Binding ElementName=Ctrl_TagsTree}"
+                        ToolTip="Разорвать связь между отмеченными тегами и выбранными елементами"/>
 
             </StackPanel>
         </ScrollViewer>
@@ -130,7 +149,7 @@
                     <MenuItem Header="Добавить тег" Command="local:CommandsOfTagsTree.AddTag"/>
                     <MenuItem Header="Редактировать елемент" Command="local:CommandsOfTagsTree.EditItems"/>
                     <MenuItem Header="Удаление">
-                        <MenuItem Header="Удалить отмеченные елементы" Command="local:CommandsOfTagsTree.DeleteCheckedItems"/>
+                        <MenuItem Header="Удалить отмеченные елементы" />
                     </MenuItem>
                     <Separator/>
                     <MenuItem Header="Связать" Command="local:CommandsOfTagsTree.BindItem"/>

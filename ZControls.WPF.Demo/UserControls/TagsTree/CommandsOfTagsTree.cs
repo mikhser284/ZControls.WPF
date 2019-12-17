@@ -43,8 +43,6 @@ namespace ZControls.WPF.Demo.UserControls
             , typeof(CommandsOfTagsTree)
             , new InputGestureCollection() { new KeyGesture(Key.Subtract, ModifierKeys.Control) });
 
-
-
         public static readonly RoutedCommand AddDir
             = new RoutedUICommand("Добавить папку"
             , nameof(AddDir)

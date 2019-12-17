@@ -114,6 +114,47 @@ namespace ZControls.WPF.Demo.DataModel
             return selectedTags;            
         }
 
+        public Dictionary<Int32, Tag> GetTagsDictionary()
+        {
+            Dictionary<Int32, Tag> tagsDictionary = new Dictionary<int, Tag>();
+            Stack<ITagTreeItem> stack = new Stack<ITagTreeItem>(Items);
+            while(stack.Count > 0)
+            {
+                ITagTreeItem treeItem = stack.Pop();                
+                if(treeItem is Tag tag) tagsDictionary.Add(tag.Id, tag);
+                else if (treeItem is TagsDir tagsDir) foreach (var dirItem in tagsDir.Items) stack.Push(dirItem);
+            }
+            return tagsDictionary;
+        }
+
+        public void GetTagsByState(out HashSet<Int32> redTags, out HashSet<Int32> greenTags, out HashSet<Int32> blueTags)
+        {
+            redTags = new HashSet<Int32>();
+            greenTags = new HashSet<Int32>();
+            blueTags = new HashSet<Int32>();
+            Stack<ITagTreeItem> stack = new Stack<ITagTreeItem>(Items);
+            while (stack.Count > 0)
+            {
+                ITagTreeItem treeItem = stack.Pop();
+                if (treeItem is Tag tag)
+                {
+                    switch(tag.State)
+                    {
+                        case ETagState.Exclude:
+                            redTags.Add(tag.Id);
+                            break;
+                        case ETagState.Include:
+                            greenTags.Add(tag.Id);
+                            break;
+                        case ETagState.Undefined:
+                            blueTags.Add(tag.Id);
+                            break;
+                    }                    
+                }
+                else if (treeItem is TagsDir tagsDir) foreach (var dirItem in tagsDir.Items) stack.Push(dirItem);
+            }
+        }
+
         public List<Tag> ChangeStateOfSelectedTags(ETagState state)
         {
             List<Tag> selectedTags = GetSelectedTags();

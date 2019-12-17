@@ -7,9 +7,9 @@ using System.Text;
 
 namespace ZControls.WPF.Demo.Aux
 {
-    public class DataItem : INotifyPropertyChanged
+    public class TagableObject : INotifyPropertyChanged, ITagableObject
     {
-        private Boolean _isSelected { get; set; }
+        private Boolean _isSelected;
         public Boolean IsSelected
         {
             get { return _isSelected; }
@@ -20,7 +20,7 @@ namespace ZControls.WPF.Demo.Aux
             }
         }
 
-        private String _name { get; set; }
+        private String _name;
         public String Name
         {
             get { return _name; }
@@ -31,9 +31,18 @@ namespace ZControls.WPF.Demo.Aux
             }
         }
 
-        public HashSet<Int32> _tagsIds { get; set; }
+        private HashSet<Int32> _tagsIds;
+        public HashSet<Int32> TagsIds
+        {
+            get { return _tagsIds; }
+            set
+            {
+                _tagsIds = value;
+                OnPropertyChanged(nameof(TagsIds));
+            }
+        }
 
-        private String _tagsNames { get; set; }
+        private String _tagsNames;
         public String TagsNames
         {
             get { return _tagsNames; }
@@ -44,10 +53,11 @@ namespace ZControls.WPF.Demo.Aux
             }
         }
 
-        public DataItem(String name)
+        public TagableObject(String name)
         {
             _name = name;
-            _tagsIds = new HashSet<int>();
+            _tagsIds = new HashSet<Int32>();
+            _tagsNames = "—";
         }
 
         public override string ToString()

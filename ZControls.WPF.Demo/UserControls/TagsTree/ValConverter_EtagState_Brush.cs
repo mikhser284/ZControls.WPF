@@ -13,8 +13,8 @@ namespace ZControls.WPF.Demo.UserControls
         private static readonly Dictionary<ETagState, Brush> ETagState_Brush = new Dictionary<ETagState, Brush>
         {
             { ETagState.Exclude, Brushes.Red },
-            { ETagState.Include, Brushes.DarkGreen },
-            { ETagState.Undefined, Brushes.Black },
+            { ETagState.Include, Brushes.Green },
+            { ETagState.Undefined, Brushes.SteelBlue },
             { ETagState.Unavailable, Brushes.Gray }
         };
 

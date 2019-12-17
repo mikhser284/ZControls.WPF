@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
@@ -12,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ZControls.WPF.Demo.Aux;
 using ZControls.WPF.Demo.DataModel;
 
 namespace ZControls.WPF.Demo.UserControls
@@ -90,11 +93,13 @@ namespace ZControls.WPF.Demo.UserControls
 
     public partial class TagsTree : UserControl, INotifyPropertyChanged
     {
-        
+        private TreeOfTags tTree = new TreeOfTags();
 
-        private 
+        public void GetTagsByState(out HashSet<Int32> redTags, out HashSet<Int32> greenTags, out HashSet<Int32> blueTags)
+            => tTree.GetTagsByState(out redTags, out greenTags, out blueTags);
 
-        TreeOfTags tTree = new TreeOfTags();
+
+        public ObservableCollection<TagableObject> TagableObjectsCollection { get; set; }
 
         public TagsTree()
         {
@@ -102,6 +107,32 @@ namespace ZControls.WPF.Demo.UserControls
 
             GenerateTestData();
             BindCommandsAndHandlers(Ctrl_TagsTree);
+            Ctrl_TagsTree.KeyDown += Ctrl_TagsTree_KeyDown;
+        }
+
+        private void Ctrl_TagsTree_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape) UnselectTreeViewItem(Ctrl_TagsTree);
+        }
+
+        private void UnselectTreeViewItem(TreeView pTreeView)
+        {
+            if (pTreeView.SelectedItem == null)
+                return;
+
+            if (pTreeView.SelectedItem is TreeViewItem)
+            {
+                (pTreeView.SelectedItem as TreeViewItem).IsSelected = false;
+            }
+            else
+            {
+                TreeViewItem item = pTreeView.ItemContainerGenerator.ContainerFromIndex(0) as TreeViewItem;
+                if (item != null)
+                {
+                    item.IsSelected = true;
+                    item.IsSelected = false;
+                }
+            }
         }
 
         private void GenerateTestData()
@@ -133,27 +164,7 @@ namespace ZControls.WPF.Demo.UserControls
             Ctrl_TagsTree.ItemsSource = tTree.Items;
         }
 
-        private void BindCommandsAndHandlers(TreeView treeView)
-        {
-            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.ExpandAll, CommandExpandAll_Executed, CommandExpandAll_CanExecute));
-            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.ExpandTree, CommandExpandTree_Executed, CommandExpandTree_CanExecute));
-            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.ColapseAll, CommandColapseAll_Executed, CommandColapseAll_CanExecute));
-            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.ColapseAllButThisTree, CommandColapseAllButThisTree_Executed, CommandColapseAllButThisTree_CanExecute));
-            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.ColapseAllButThisBranch, CommandColapseAllButThisBranch_Executed, CommandColapseAllButThisBranch_CanExecute));
-            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.ColapseTree, CommandColapseTree_Executed, CommandColapseTree_CanExecute));
-            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.AddDir, CommandAddDir_Executed, CommandAddDir_CanExecute));
-            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.AddTag, CommandAddTag_Executed, CommandAddTag_CanExecute));
-            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.EditItems, CommandEditItems_Executed, CommandEditItems_CanExecute));
-            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.DeleteCheckedItems, CommandDeleteCheckedItems_Executed, CommandDeleteCheckedItems_CanExecute));
-            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.BindItem, CommandBindItem_Executed, CommandBindItem_CanExecute));
-            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.UnbindItem, CommandUnbindItem_Executed, CommandUnbindItem_CanExecute));
-            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.CheckedTagsStateAsIncluded, CommandCheckedTagsStateAsIncluded_Executed, CommandCheckedTagsStateAsIncluded_CanExecute));
-            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.CheckedTagsStateAsExcluded, CommandCheckedTagsStateAsExcluded_Executed, CommandCheckedTagsStateAsExcluded_CanExecute));
-            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.CheckedTagsStateAsNone, CommandCheckedTagsStateAsNone_Executed, CommandCheckedTagsStateAsNone_CanExecute));
-            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.SetCheckMark, CommandSetCheckMark_Executed, CommandSetCheckMark_CanExecute));
-            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.ClearCheckMark, CommandClearCheckMark_Executed, CommandClearCheckMark_CanExecute));
-            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.InvertCheckMark, CommandInvertCheckMark_Executed, CommandInvertCheckMark_CanExecute));
-        }
+        
 
 
         private void TagsTreeItem_Click(object sender, RoutedEventArgs e)
@@ -165,57 +176,36 @@ namespace ZControls.WPF.Demo.UserControls
             ITagTreeItem tagsTreeItem = stackPanel.DataContext as ITagTreeItem;
             tTree.SelectItem(tagsTreeItem, (Boolean)checkBox.IsChecked);
         }
-
-        private void AddItem_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void DeleteItem_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void EditItem_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void MarkAsIncludable_Click(object sender, RoutedEventArgs e)
-        {
-            tTree.ChangeStateOfSelectedTags(ETagState.Include);
-            tTree.ApplyToSelectedItems(x => x.IsSelected = false);
-        }
-
-        private void MarkAsExcludable_Click(object sender, RoutedEventArgs e)
-        {
-            tTree.ChangeStateOfSelectedTags(ETagState.Exclude);
-            tTree.ApplyToSelectedItems(x => x.IsSelected = false);
-        }
-
-        private void MarkAsNone_Click(object sender, RoutedEventArgs e)
-        {
-            tTree.ChangeStateOfSelectedTags(ETagState.Undefined);
-            tTree.ApplyToSelectedItems(x => x.IsSelected = false);
-        }
-
-        private void Link_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void UnLink_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        
     }
 
-
+    // Commands
     public partial class TagsTree
     {
-        private void CommandExpandAll_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void BindCommandsAndHandlers(TreeView treeView)
+        {
+            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.ExpandAll, ExpandAll_Executed, ExpandAll_CanExecute));
+            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.ExpandTree, ExpandTree_Executed, ExpandTree_CanExecute));
+            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.ColapseAll, ColapseAll_Executed, ColapseAll_CanExecute));
+            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.ColapseAllButThisTree, ColapseAllButThisTree_Executed, ColapseAllButThisTree_CanExecute));
+            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.ColapseAllButThisBranch, ColapseAllButThisBranch_Executed, ColapseAllButThisBranch_CanExecute));
+            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.ColapseTree, ColapseTree_Executed, ColapseTree_CanExecute));
+            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.AddDir, AddDir_Executed, AddDir_CanExecute));
+            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.AddTag, AddTag_Executed, AddTag_CanExecute));
+            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.EditItems, EditItems_Executed, EditItems_CanExecute));
+            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.DeleteCheckedItems, DeleteCheckedItems_Executed, DeleteCheckedItems_CanExecute));
+            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.BindItem, BindItem_Executed, BindItem_CanExecute));
+            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.UnbindItem, UnbindItem_Executed, UnbindItem_CanExecute));
+            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.CheckedTagsStateAsIncluded, CheckedTagsStateAsIncluded_Executed, CheckedTagsStateAsIncluded_CanExecute));
+            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.CheckedTagsStateAsExcluded, CheckedTagsStateAsExcluded_Executed, CheckedTagsStateAsExcluded_CanExecute));
+            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.CheckedTagsStateAsNone, CheckedTagsStateAsNone_Executed, CheckedTagsStateAsNone_CanExecute));
+            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.SetCheckMark, SetCheckMark_Executed, SetCheckMark_CanExecute));
+            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.ClearCheckMark, ClearCheckMark_Executed, ClearCheckMark_CanExecute));
+            treeView.CommandBindings.Add(new CommandBinding(CommandsOfTagsTree.InvertCheckMark, InvertCheckMark_Executed, InvertCheckMark_CanExecute));
+        }
+
+        // ▬▬▬▬▬ ExpandAll ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
+        private void ExpandAll_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Stack<TreeViewItem> stack = new Stack<TreeViewItem>();
 
@@ -226,25 +216,27 @@ namespace ZControls.WPF.Demo.UserControls
             }
         }
 
-        private void CommandExpandAll_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void ExpandAll_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
 
+        // ▬▬▬▬▬ ExpandTree ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 
-        private void CommandExpandTree_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void ExpandTree_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             TreeViewItem treeViewItem = Ctrl_TagsTree.ItemContainerGenerator.ContainerFromItem(Ctrl_TagsTree.SelectedItem) as TreeViewItem;
             if (treeViewItem != null) treeViewItem.ExpandSubtree();
         }
 
-        private void CommandExpandTree_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void ExpandTree_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
 
+        // ▬▬▬▬▬ ColapseAll ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 
-        private void CommandColapseAll_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void ColapseAll_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             TreeViewItem treeViewItem = Ctrl_TagsTree.ItemContainerGenerator.ContainerFromItem(Ctrl_TagsTree.SelectedItem) as TreeViewItem;
             foreach(var item in treeViewItem.Items)
@@ -257,45 +249,50 @@ namespace ZControls.WPF.Demo.UserControls
             }
         }
 
-        private void CommandColapseAll_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void ColapseAll_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
 
+        // ▬▬▬▬▬ ColapseAllButThisTree ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 
-        private void CommandColapseAllButThisTree_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void ColapseAllButThisTree_Executed(object sender, ExecutedRoutedEventArgs e)
         {
 
         }
 
-        private void CommandColapseAllButThisTree_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = false;
-        }
-
-
-        private void CommandColapseAllButThisBranch_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-
-        }
-
-        private void CommandColapseAllButThisBranch_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void ColapseAllButThisTree_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = false;
         }
 
+        // ▬▬▬▬▬ ColapseAllButThisBranch ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 
-        private void CommandColapseTree_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void ColapseAllButThisBranch_Executed(object sender, ExecutedRoutedEventArgs e)
         {
 
         }
 
-        private void CommandColapseTree_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void ColapseAllButThisBranch_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = false;
         }
 
-        private void CommandAddDir_Executed(object sender, ExecutedRoutedEventArgs e)
+        // ▬▬▬▬▬ ColapseTree ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
+        private void ColapseTree_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+
+        }
+
+        private void ColapseTree_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = false;
+        }
+
+        // ▬▬▬▬▬ AddDir ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
+        private void AddDir_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             ITagTreeItem tagsTreeItem = Ctrl_TagsTree.SelectedItem as ITagTreeItem;            
             while(tagsTreeItem != null && tagsTreeItem.GetType() != typeof(TagsDir)) tagsTreeItem = tagsTreeItem.Parent;
@@ -326,15 +323,15 @@ namespace ZControls.WPF.Demo.UserControls
                 }
             }
         }
-
-
-        private void CommandAddDir_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        
+        private void AddDir_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
 
+        // ▬▬▬▬▬ AddTag ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 
-        private void CommandAddTag_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void AddTag_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             ITagTreeItem tagsTreeItem = Ctrl_TagsTree.SelectedItem as ITagTreeItem;
             while (tagsTreeItem != null)
@@ -345,132 +342,170 @@ namespace ZControls.WPF.Demo.UserControls
             tTree.AddTag("New tag", tagsTreeItem as TagsDir);
         }
 
-        private void CommandAddTag_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void AddTag_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
 
+        // ▬▬▬▬▬ EditItems ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 
-        private void CommandEditItems_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void EditItems_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             IsInEditMode = true;
         }
 
-        private void CommandEditItems_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void EditItems_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
 
+        // ▬▬▬▬▬ DeleteCheckedItems ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 
-        private void CommandDeleteCheckedItems_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void DeleteCheckedItems_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             tTree.ForEach(x => x.IsSelected == true, (x) => { if (x.Parent is TagsDir dir) dir.Items.Remove(x); x.Parent = null; });
         }
 
-        private void CommandDeleteCheckedItems_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void DeleteCheckedItems_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = IsAnyItemChecked();
+        }
+
+        private Boolean IsAnyItemChecked()
         {
             Boolean thereAreSelectedItems = false;
-            foreach(var item in tTree.Items)
+            foreach (var item in tTree.Items)
             {
-                if(item.IsSelected == false) continue;
+                if (item.IsSelected == false) continue;
                 thereAreSelectedItems = true;
                 break;
             }
-            e.CanExecute = thereAreSelectedItems;
+            return thereAreSelectedItems;
         }
 
+        // ▬▬▬▬▬ BindItem ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 
-        private void CommandBindItem_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void BindItem_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-
+            List<TagableObject> selectedItems = TagableObjectsCollection.GetQueriedItems(x => x.IsSelected);
+            List<Tag> selectedTags = tTree.GetSelectedTags().OrderBy(x => x.Name).ToList();
+            selectedItems.ForEach(item => selectedTags.ForEach(tag => item.TagsIds.Add(tag.Id)));
+            Dictionary<Int32, Tag> tagsDictionary = tTree.GetTagsDictionary();
+            foreach(var item in selectedItems)
+            {
+                List<String> tagsNames = new List<string>();
+                foreach (Int32 tagId in item.TagsIds) tagsNames.Add($"[#{tagsDictionary[tagId].Name}]");
+                item.TagsNames = String.Join("; ", tagsNames.OrderBy(x => x));
+            }
         }
 
-        private void CommandBindItem_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void BindItem_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = false;
+            e.CanExecute = IsAnyItemChecked();
         }
 
+        // ▬▬▬▬▬ UnbindItem ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 
-        private void CommandUnbindItem_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void UnbindItem_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-
+            
         }
 
-        private void CommandUnbindItem_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void UnbindItem_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = false;
+            e.CanExecute = IsAnyItemChecked();
         }
 
+        // ▬▬▬▬▬ CheckedTagsStateAsIncluded ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 
-        private void CommandCheckedTagsStateAsIncluded_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void CheckedTagsStateAsIncluded_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-
+            tTree.ChangeStateOfSelectedTags(ETagState.Include);
+            tTree.ApplyToSelectedItems(x => x.IsSelected = false);
         }
 
-        private void CommandCheckedTagsStateAsIncluded_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void CheckedTagsStateAsIncluded_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = false;
+            e.CanExecute = IsAnyItemChecked();
         }
 
+        // ▬▬▬▬▬ CheckedTagsStateAsExcluded ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 
-        private void CommandCheckedTagsStateAsExcluded_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void CheckedTagsStateAsExcluded_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-
+            tTree.ChangeStateOfSelectedTags(ETagState.Exclude);
+            tTree.ApplyToSelectedItems(x => x.IsSelected = false);
         }
 
-        private void CommandCheckedTagsStateAsExcluded_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void CheckedTagsStateAsExcluded_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = false;
+            e.CanExecute = IsAnyItemChecked();
         }
 
+        // ▬▬▬▬▬ CheckedTagsStateAsNone ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 
-        private void CommandCheckedTagsStateAsNone_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void CheckedTagsStateAsNone_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-
+            tTree.ChangeStateOfSelectedTags(ETagState.Undefined);
+            tTree.ApplyToSelectedItems(x => x.IsSelected = false);
         }
 
-        private void CommandCheckedTagsStateAsNone_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void CheckedTagsStateAsNone_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = false;
+            e.CanExecute = IsAnyItemChecked();
         }
 
+        // ▬▬▬▬▬ SetCheckMark ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 
-        private void CommandSetCheckMark_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void SetCheckMark_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             ITagTreeItem tagsTreeItem = Ctrl_TagsTree.SelectedItem as ITagTreeItem;
             tTree.SelectItem(tagsTreeItem, true);
         }
 
-        private void CommandSetCheckMark_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void SetCheckMark_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             ITagTreeItem tagsTreeItem = Ctrl_TagsTree.SelectedItem as ITagTreeItem;
             e.CanExecute = tagsTreeItem != null && tagsTreeItem.IsSelected != true;
         }
 
+        // ▬▬▬▬▬ ClearCheckMark ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 
-        private void CommandClearCheckMark_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void ClearCheckMark_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             ITagTreeItem tagsTreeItem = Ctrl_TagsTree.SelectedItem as ITagTreeItem;
             tTree.SelectItem(tagsTreeItem, false);
         }
 
-        private void CommandClearCheckMark_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void ClearCheckMark_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             ITagTreeItem tagsTreeItem = Ctrl_TagsTree.SelectedItem as ITagTreeItem;
             e.CanExecute = tagsTreeItem != null && tagsTreeItem.IsSelected != false;
         }
 
+        // ▬▬▬▬▬ InvertCheckMark ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 
-        private void CommandInvertCheckMark_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void InvertCheckMark_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             ITagTreeItem tagsTreeItem = Ctrl_TagsTree.SelectedItem as ITagTreeItem;
             Boolean selection = tagsTreeItem.IsSelected == null ? true : (Boolean)tagsTreeItem.IsSelected;
             tTree.SelectItem(tagsTreeItem, !selection);
         }
 
-        private void CommandInvertCheckMark_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void InvertCheckMark_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = Ctrl_TagsTree.SelectedItem != null;
+        }
+    }
+
+
+    public static class Ext_Linq
+    {
+        public static List<T> GetQueriedItems<T>(this ObservableCollection<T> itemsSet, Func<T, Boolean> selector)
+        {
+            List<T> queriedItems = new List<T>();
+            foreach(T item in itemsSet) if (selector(item)) queriedItems.Add(item);
+            return queriedItems;
         }
     }
 }
