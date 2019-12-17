@@ -57,7 +57,7 @@
                                       Click="TagsTreeItem_Click"/>
                         <Label Content="🏷" VerticalAlignment="Center" Padding="-1" Margin="2,0"
                                    Foreground="{Binding Path=State, Converter={StaticResource valConverter_ETagState_Brush}}" />
-                        <TextBox VerticalAlignment="Center"
+                        <TextBlock VerticalAlignment="Center"
                                        Text="{Binding Path=Name}"
                                        Foreground="{Binding Path=State, Converter={StaticResource valConverter_ETagState_Brush}}"
                                        FontWeight="{Binding Path=State, Converter={StaticResource ValConverter_ETagState_FontWeight}}"

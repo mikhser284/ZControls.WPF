@@ -14,7 +14,8 @@ namespace ZControls.WPF.Demo.UserControls
         {
             { ETagState.Exclude, Brushes.Red },
             { ETagState.Include, Brushes.DarkGreen },
-            { ETagState.Undefined, Brushes.Gray }
+            { ETagState.Undefined, Brushes.Black },
+            { ETagState.Unavailable, Brushes.Gray }
         };
 
 
