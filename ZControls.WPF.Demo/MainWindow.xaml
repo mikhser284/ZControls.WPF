@@ -38,8 +38,9 @@
 
             <ScrollViewer Grid.Column="0" Grid.Row="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <StackPanel Orientation="Horizontal" Background="#CCD5F0">
-                    <Button x:Name="Btn_Select" Content="Select" Margin="2" Click="Btn_Select_Click" Background="LightSkyBlue"/>
-                    <Button x:Name="Btn_Reset" Content="Reset" Margin="2" Click="Btn_Reset_Click" Background="LightSkyBlue"/>
+                    <Button x:Name="Btn_Select" Content="Select" Margin="2" Click="Btn_Select_Click"/>
+                    <Button x:Name="Btn_Reset" Content="Reset" Margin="2" Click="Btn_Reset_Click"/>
+                    <Button x:Name="Btn_AsChecked" Content="As checked" Margin="2" Click="Btn_AsChecked_Click"/>
                 </StackPanel>
             </ScrollViewer>
             <DataGrid x:Name="Ctrl_Data" Grid.Column="0" Grid.Row="1" AutoGenerateColumns="False"

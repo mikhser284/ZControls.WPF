@@ -21,63 +21,56 @@ namespace ZControls.WPF.Demo
 {
     public partial class MainWindow : Window
     {
-        
+        ObservableCollection<TagableObject> TagableObjectsCollection = new ObservableCollection<TagableObject>();
+        ObservableCollection<TagableObject> QueriedItems = new ObservableCollection<TagableObject>();
 
         public MainWindow()
         {
             InitializeComponent();
-
-            ObservableCollection<TagableObject> tagableObjectsCollection = new ObservableCollection<TagableObject>
-            {
-                new TagableObject("Data item 001"),
-                new TagableObject("Data item 002"),
-                new TagableObject("Data item 003"),
-                new TagableObject("Data item 004"),
-                new TagableObject("Data item 005"),
-                new TagableObject("Data item 006"),
-                new TagableObject("Data item 007"),
-                new TagableObject("Data item 008"),
-                new TagableObject("Data item 009"),
-                new TagableObject("Data item 010"),
-                new TagableObject("Data item 011"),
-                new TagableObject("Data item 012"),
-                new TagableObject("Data item 013"),
-                new TagableObject("Data item 014"),
-                new TagableObject("Data item 015"),
-                new TagableObject("Data item 016"),
-                new TagableObject("Data item 017"),
-                new TagableObject("Data item 018"),
-                new TagableObject("Data item 019"),
-                new TagableObject("Data item 020"),
-                new TagableObject("Data item 021"),
-                new TagableObject("Data item 022"),
-            };
-            Ctrl_Data.ItemsSource = tagableObjectsCollection;
-            Ctrl_Tags.TagableObjectsCollection = tagableObjectsCollection;
+            //
+            TagableObjectsCollection.Add(new TagableObject("Data item 001"));
+            TagableObjectsCollection.Add(new TagableObject("Data item 002"));
+            TagableObjectsCollection.Add(new TagableObject("Data item 003"));
+            TagableObjectsCollection.Add(new TagableObject("Data item 004"));
+            TagableObjectsCollection.Add(new TagableObject("Data item 005"));
+            TagableObjectsCollection.Add(new TagableObject("Data item 006"));
+            TagableObjectsCollection.Add(new TagableObject("Data item 007"));
+            TagableObjectsCollection.Add(new TagableObject("Data item 008"));
+            TagableObjectsCollection.Add(new TagableObject("Data item 009"));
+            TagableObjectsCollection.Add(new TagableObject("Data item 010"));
+            TagableObjectsCollection.Add(new TagableObject("Data item 011"));
+            TagableObjectsCollection.Add(new TagableObject("Data item 012"));
+            TagableObjectsCollection.Add(new TagableObject("Data item 013"));
+            TagableObjectsCollection.Add(new TagableObject("Data item 014"));
+            TagableObjectsCollection.Add(new TagableObject("Data item 015"));
+            TagableObjectsCollection.Add(new TagableObject("Data item 016"));
+            TagableObjectsCollection.Add(new TagableObject("Data item 017"));
+            TagableObjectsCollection.Add(new TagableObject("Data item 018"));
+            TagableObjectsCollection.Add(new TagableObject("Data item 019"));
+            TagableObjectsCollection.Add(new TagableObject("Data item 020"));
+            TagableObjectsCollection.Add(new TagableObject("Data item 021"));
+            TagableObjectsCollection.Add(new TagableObject("Data item 022"));
+            //
+            QueriedItems = TagableObjectsCollection;
+            Ctrl_Data.ItemsSource = QueriedItems;
+            Ctrl_Tags.TagableObjectsCollection = TagableObjectsCollection;
+            Ctrl_Tags.RelatedControl = Ctrl_Data;
         }
 
         private void Btn_Select_Click(object sender, RoutedEventArgs e)
         {
-            HashSet<Int32> redTags;
-            HashSet<Int32> greenTags;
-            HashSet<Int32> blueTags;
-            Ctrl_Tags.GetTagsByState(out redTags, out greenTags, out blueTags);
-
-            foreach(DataGridRow row in GetDataGridRows(Ctrl_Data))
-            {
-                if(row.Item is TagableObject obj)
-                {
-                    if(obj.TagsIds.ContainsAnyFrom(redTags))
-                        row.Visibility = Visibility.Collapsed;
-                }
-            }
+            HashSet<Int32> selectedTags = null;
+            Ctrl_Data.ItemsSource = Ctrl_Tags.PerformQuery(TagableObjectsCollection, out selectedTags);
         }
 
         private void Btn_Reset_Click(object sender, RoutedEventArgs e)
         {
+            Ctrl_Data.ItemsSource = TagableObjectsCollection;
             foreach (DataGridRow row in GetDataGridRows(Ctrl_Data))
             {
                 row.Visibility = Visibility.Visible;
+                row.IsSelected = false;
+                if (row.Item is TagableObject obj) obj.IsSelected = false;
             }
         }
 
@@ -93,7 +86,14 @@ namespace ZControls.WPF.Demo
             }
         }
 
-
+        private void Btn_AsChecked_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (DataGridRow row in GetDataGridRows(Ctrl_Data))
+            {
+                if (!row.IsSelected) continue;
+                if (row.Item is TagableObject obj) obj.IsSelected = true;
+            }
+        }
     }
 
     public static class Ext_Linq
