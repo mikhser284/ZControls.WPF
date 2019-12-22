@@ -214,7 +214,19 @@ namespace ZControls.WPF.Demo.UserControls
     // Object construction
     public partial class TagsTree : UserControl, INotifyPropertyChanged
     {
-        public IEnumerable<ITagableObject> TagableObjectsCollection { get; set; }
+        private IEnumerable<ITagableObject> _tagableObjectsCollection;
+
+        public IEnumerable<ITagableObject> TagableObjectsCollection
+        {
+            get { return _tagableObjectsCollection; }
+            set
+            {
+                _tagableObjectsCollection = value;
+                QueriedItems = value;
+            }
+        }
+
+        private IEnumerable<ITagableObject> QueriedItems { get; set; }
 
         public TagsTree()
         {
@@ -626,14 +638,20 @@ namespace ZControls.WPF.Demo.UserControls
         private void CheckedTagsStateAsIncluded_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             ForEach(x => IsTreeItemSelected(x), x => { if (x is Tag tag) tag.State = ETagState.Include; x.IsSelected = false; });
-            IEnumerable<ITagableObject> tagableObjects = RelatedControl.ItemsSource.Cast<ITagableObject>();
             HashSet<Int32> selectedTags = null;
-            RelatedControl.ItemsSource = PerformQuery(tagableObjects, out selectedTags);            
+            QueriedItems = PerformQuery(TagableObjectsCollection, out selectedTags);
+            RelatedControl.ItemsSource = QueriedItems;
+            //
+            foreach(var item in _tagsDictionary.Keys)
+            {
+                if (selectedTags.Contains(item)) continue;
+                _tagsDictionary[item].State = ETagState.Unavailable;
+            }            
         }
 
         private void CheckedTagsStateAsIncluded_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = IsAnyItemChecked();
+            e.CanExecute = true;
         }
 
         // ▬▬▬▬▬ CheckedTagsStateAsExcluded ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
@@ -641,11 +659,20 @@ namespace ZControls.WPF.Demo.UserControls
         private void CheckedTagsStateAsExcluded_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             ForEach(x => IsTreeItemSelected(x), x => { if (x is Tag tag) tag.State = ETagState.Exclude; x.IsSelected = false; });
+            HashSet<Int32> selectedTags = null;
+            QueriedItems = PerformQuery(TagableObjectsCollection, out selectedTags);
+            RelatedControl.ItemsSource = QueriedItems;
+            //
+            foreach (var item in _tagsDictionary.Keys)
+            {
+                if (selectedTags.Contains(item)) continue;
+                _tagsDictionary[item].State = ETagState.Unavailable;
+            }
         }
 
         private void CheckedTagsStateAsExcluded_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = IsAnyItemChecked();
+            e.CanExecute = true;
         }
 
         // ▬▬▬▬▬ CheckedTagsStateAsNone ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
@@ -653,11 +680,20 @@ namespace ZControls.WPF.Demo.UserControls
         private void CheckedTagsStateAsNone_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             ForEach(x => IsTreeItemSelected(x), x => { if (x is Tag tag) tag.State = ETagState.Undefined; x.IsSelected = false; });
+            HashSet<Int32> selectedTags = null;
+            QueriedItems = PerformQuery(TagableObjectsCollection, out selectedTags);
+            RelatedControl.ItemsSource = QueriedItems;
+            //
+            foreach (var item in _tagsDictionary.Keys)
+            {
+                if (selectedTags.Contains(item)) continue;
+                _tagsDictionary[item].State = ETagState.Unavailable;
+            }
         }
 
         private void CheckedTagsStateAsNone_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = IsAnyItemChecked();
+            e.CanExecute = true;
         }
 
         // ▬▬▬▬▬ SetCheckMark ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬

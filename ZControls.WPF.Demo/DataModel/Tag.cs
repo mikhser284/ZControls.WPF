@@ -52,6 +52,28 @@ namespace ZControls.WPF.Demo.DataModel
             }
         }
 
+        private Int32 _relatedItemsCount = 0;
+        public Int32 RelatedItemsCount
+        {
+            get { return _relatedItemsCount; }
+            set
+            {
+                _relatedItemsCount = value;
+                OnPropertyChanged(nameof(RelatedItemsCount));
+            }
+        }
+
+        private Int32 _availableItemsCount = 0;
+        public Int32 AvailableItemsCount
+        {
+            get { return _availableItemsCount; }
+            set
+            {
+                _relatedItemsCount = value;
+                OnPropertyChanged(nameof(AvailableItemsCount));
+            }
+        }
+
         private ITagTreeItem _parent;
         public ITagTreeItem Parent
         {

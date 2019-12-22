@@ -15,7 +15,8 @@ namespace ZControls.WPF.Demo.UserControls
         {
             { ETagState.Exclude, FontWeights.Bold },
             { ETagState.Include, FontWeights.Bold },
-            { ETagState.Undefined, FontWeights.Normal }
+            { ETagState.Undefined, FontWeights.Normal },
+            { ETagState.Unavailable, FontWeights.Normal }
         };
 
 

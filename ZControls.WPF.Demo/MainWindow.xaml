@@ -8,9 +8,6 @@
         xmlns:ctrl="clr-namespace:ZControls.WPF.Demo.UserControls"
         mc:Ignorable="d"
         Title="MainWindow" Height="700" Width="900" Background="#5D6B99">
-    
-    
-    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" MinWidth="100"/>

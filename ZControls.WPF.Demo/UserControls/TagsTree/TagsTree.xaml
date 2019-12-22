@@ -67,18 +67,18 @@
                         <CheckBox IsChecked="{Binding Path=IsSelected}" Margin="2,0" VerticalAlignment="Center"
                                       Focusable="False"
                                       Click="TagsTreeItem_Click"/>
-                        <Label Content="📁" Foreground="Gray" VerticalAlignment="Center" Padding="-1" Margin="2,0"/>
+                        <Label Content="📁" Foreground="DarkOrange" VerticalAlignment="Center" Padding="-1" Margin="2,0"/>
                         <TextBlock x:Name="TagsDirNotEditableTitle"
                                    Text="{Binding Path=Name}"
                                    MouseLeftButtonDown="TextBlock_MouseLeftButtonUp"
                                    VerticalAlignment="Center"
-                                   Foreground="Gray"/>
+                                   Foreground="Black"/>
                         <TextBox x:Name="TagsDirEditableTitle" Visibility="Collapsed"
                                  Text="{Binding Path=Name, UpdateSourceTrigger=LostFocus}"
                                  VerticalAlignment="Center"
                                  LostFocus="TextBox_LostFocus"
                                  IsVisibleChanged="TextBox_IsVisibleChanged"
-                                 KeyDown="TextBox_KeyDown"/>
+                                 KeyDown="TextBox_KeyDown"/>                        
                     </StackPanel>
                     <HierarchicalDataTemplate.Triggers>
                         <MultiDataTrigger>
@@ -110,6 +110,9 @@
                                  LostFocus="TextBox_LostFocus"
                                  IsVisibleChanged="TextBox_IsVisibleChanged"
                                  KeyDown="TextBox_KeyDown"/>
+                        <Border CornerRadius="5" Background="LightGray" Margin="5,1,5,1" Padding="3,1,3,1" VerticalAlignment="Center">
+                            <Label Content="12/36" Foreground="Gray" Margin="0" Padding="0" FontSize="10"/>
+                        </Border>
                     </StackPanel>
                     <DataTemplate.Triggers>
                         <MultiDataTrigger>
