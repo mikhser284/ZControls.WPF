@@ -1,0 +1,107 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ctrl="clr-namespace:ZControls.WPF.TagsTree.Ctrl"
+                    xmlns:aux="clr-namespace:ZControls.WPF.TagsTree.CtrlAux"
+                    xmlns:dm="clr-namespace:ZControls.WPF.TagsTree.DataModel"
+                    >
+    <Style TargetType="{x:Type ctrl:TagsTreeCtrl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrl:TagsTreeCtrl}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" MinWidth="100"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" MinHeight="10"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <ScrollViewer Grid.Column="0" Grid.Row="0"
+                                          VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                                <StackPanel Orientation="Horizontal">
+                                    <ToggleButton x:Name="Part_AutoClearSelection" ToolTip="Снимать отметки после выполнения операции">
+                                        <Image Source="/ZControls.WPF;component/Resources/Icons/CheckboxList_16x.png"/>
+                                    </ToggleButton>
+                                    <Button x:Name="Part_ExpandAll" ToolTip="Развернуть все" MinHeight="20" MinWidth="20">
+                                        <Image Source="/ZControls.WPF;component/Resources/Icons/ExpandAll_16x.png"/>
+                                    </Button>
+                                    <Button x:Name="Part_CollapseAllButThis" ToolTip="Свернуть все кро этой ветки" Margin="0,0,3,0">
+                                        <Image Source="/ZControls.WPF;component/Resources/Icons/CollapseAll_16x.png"/>
+                                    </Button>
+
+                                    <ToggleButton x:Name="Part_InfiniteSearch" ToolTip="Непрерывный поиск" Margin="3,0,0,0">
+                                        <Image Source="/ZControls.WPF;component/Resources/Icons/Search_16x.png"/>
+                                    </ToggleButton>
+                                    <Button x:Name="Part_MarkCheckedAsIncludable" ToolTip="Включать в результаты поиска">
+                                        <Image Source="/ZControls.WPF;component/Resources/Icons/StatusOK_16x.png"/>
+                                    </Button>
+                                    <Button x:Name="Part_MarkCheckedAsExcludable" ToolTip="Исключать из результатов поиска">
+                                        <Image Source="/ZControls.WPF;component/Resources/Icons/StatusStop_16x.png"/>
+                                    </Button>
+                                    <Button x:Name="Part_MarkAllAsUndefined" ToolTip="Снять влияние на результаты поиска со всех" Margin="0,0,3,0">
+                                        <Image Source="/ZControls.WPF;component/Resources/Icons/Home_16x.png"/>
+                                    </Button>
+
+                                    <Button x:Name="Part_AddFolder" ToolTip="Создать папку" Margin="3,0,0,0">
+                                        <Image Source="/ZControls.WPF;component/Resources/Icons/AddFolder_16x.png"/>
+                                    </Button>
+                                    <Button x:Name="Part_AddTag" ToolTip="Создать тег">
+                                        <Image Source="/ZControls.WPF;component/Resources/Icons/Add_16x.png"/>
+                                    </Button>
+                                    <Button x:Name="Part_EditSelected" ToolTip="Редактировать" Margin="0,0,3,0">
+                                        <Image Source="/ZControls.WPF;component/Resources/Icons/Edit_16x.png" />
+                                    </Button>
+
+                                    <Button x:Name="Part_Bind" ToolTip="Связать" Margin="3,0,0,0">
+                                        <Image Source="/ZControls.WPF;component/Resources/Icons/AddLink_16x.png"/>
+                                    </Button>
+                                    <Button x:Name="Part_Unbind" ToolTip="Отвязать">
+                                        <Image Source="/ZControls.WPF;component/Resources/Icons/RemoveLink_16x.png"/>
+                                    </Button>
+                                    
+                                </StackPanel>
+                            </ScrollViewer>
+
+                            <TreeView x:Name="Part_TagsTree" Grid.Column="0" Grid.Row="1">
+                                <TreeView.Resources>
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#BFCDDB"/>
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#99B4D1"/>
+                                    <HierarchicalDataTemplate DataType="{x:Type dm:TagsDir}" ItemsSource="{Binding Path=ChildItems}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox IsChecked="{Binding Path=CheckMark}" Focusable="False" VerticalAlignment="Center"/>
+                                            <TextBlock VerticalAlignment="Center">
+                                                <Image Source="/ZControls.WPF;component/Resources/Icons/Folder_16x.png" VerticalAlignment="Center"/>
+                                                <Run Text="{Binding Path=Name}"/>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </HierarchicalDataTemplate>
+                                    <DataTemplate DataType="{x:Type dm:Tag}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox IsChecked="{Binding Path=CheckMark}" Focusable="False" VerticalAlignment="Center"/>
+                                            <TextBlock VerticalAlignment="Center">
+                                                <Image Source="/ZControls.WPF;component/Resources/Icons/Tag_16x.png" VerticalAlignment="Center"/>
+                                                <Run Text="{Binding Path=Name}"/>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </TreeView.Resources>
+                                <TreeView.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Menu item">
+                                            
+                                        </MenuItem>
+
+                                    </ContextMenu>                                        
+                                </TreeView.ContextMenu>
+                            </TreeView>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

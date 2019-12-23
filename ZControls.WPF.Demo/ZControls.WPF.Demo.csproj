@@ -6,4 +6,16 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="tick-button.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ZControls.WPF\ZControls.WPF.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="NewFolder\tick-button.png" />
+  </ItemGroup>
+
 </Project>
