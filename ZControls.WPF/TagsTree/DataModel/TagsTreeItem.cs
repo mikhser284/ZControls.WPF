@@ -38,7 +38,7 @@ namespace ZControls.WPF.TagsTree.DataModel
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName]string prop = "") { if(PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(prop)); }
+        public void OnPropertyChanged(string propName = "") => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
 
         public override String ToString() => $"[{(CheckMark == null ? "■" : CheckMark == true ? "✔" : "✖")}] {Name}";
     }

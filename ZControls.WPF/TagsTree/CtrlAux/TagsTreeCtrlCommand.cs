@@ -5,15 +5,15 @@ using System.Windows.Input;
 
 namespace ZControls.WPF.TagsTree.CtrlAux
 {
-    public static class UsersTreeCtrlCommands
+    public static class TagsTreeCtrlCommands
     {
         private static RoutedUICommand NewCommand(String commandName, params KeyGesture[] keyGestures)
-            => new RoutedUICommand(commandName, commandName, typeof(UsersTreeCtrlCommands), new InputGestureCollection(keyGestures));
+            => new RoutedUICommand(commandName, commandName, typeof(TagsTreeCtrlCommands), new InputGestureCollection(keyGestures));
 
         // ▬▬▬▬▬
 
-        public static readonly RoutedCommand AddFolder
-            = NewCommand(nameof(AddFolder), new KeyGesture(Key.Add, ModifierKeys.Control | ModifierKeys.Shift));
+        public static readonly RoutedCommand AddDir
+            = NewCommand(nameof(AddDir), new KeyGesture(Key.Add, ModifierKeys.Control | ModifierKeys.Shift));
 
         public static readonly RoutedCommand AddTag
             = NewCommand(nameof(AddTag), new KeyGesture(Key.Add, ModifierKeys.Control));

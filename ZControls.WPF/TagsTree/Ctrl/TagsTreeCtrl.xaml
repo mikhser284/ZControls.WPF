@@ -5,8 +5,9 @@
                     xmlns:dm="clr-namespace:ZControls.WPF.TagsTree.DataModel"
                     >
     
+
     <Style TargetType="{x:Type ctrl:TagsTreeCtrl}">
-        
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ctrl:TagsTreeCtrl}">
@@ -39,7 +40,7 @@
                                         </Style>
                                     </StackPanel.Resources>
                                     <ToggleButton x:Name="Part_AutoClearSelection" ToolTip="Снимать отметки после выполнения операции" IsChecked="True"
-                                                  Style="{StaticResource FlatToggleButton}">
+                                                  Style="{StaticResource FlatToggleButton}">                                        
                                         <Image Source="/ZControls.WPF;component/Resources/Icons/CheckboxList_16x.png"/>
                                     </ToggleButton>
                                     <Button x:Name="Part_CollapseAllButThis" ToolTip="Свернуть все кроме этой ветки"
@@ -54,7 +55,7 @@
                                                   Style="{StaticResource FlatButton}">
                                         <Image Source="/ZControls.WPF;component/Resources/Icons/AddAssociation_16x.png"/>
                                     </Button>
-                                    
+
 
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
 
@@ -76,7 +77,7 @@
                                     </Button>
 
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
-                                    
+
                                     <Button x:Name="Part_EditSelected" ToolTip="Редактировать"
                                             Style="{StaticResource FlatButton}">
                                         <Image Source="/ZControls.WPF;component/Resources/Icons/Edit_16x.png" />
@@ -100,7 +101,7 @@
                                             Style="{StaticResource FlatButton}">
                                         <Image Source="/ZControls.WPF;component/Resources/Icons/RemoveLink_16x.png"/>
                                     </Button>
-                                    
+
                                 </StackPanel>
                             </ScrollViewer>
 
@@ -130,10 +131,10 @@
                                 <TreeView.ContextMenu>
                                     <ContextMenu>
                                         <MenuItem Header="Menu item">
-                                            
+
                                         </MenuItem>
 
-                                    </ContextMenu>                                        
+                                    </ContextMenu>
                                 </TreeView.ContextMenu>
                             </TreeView>
                         </Grid>
