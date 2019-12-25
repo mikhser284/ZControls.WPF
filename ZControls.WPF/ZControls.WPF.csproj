@@ -6,76 +6,78 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Icons\AddAssociation_16x.png" />
-    <None Remove="Resources\Icons\AddFolder_16x.png" />
-    <None Remove="Resources\Icons\AddItem_16x.png" />
-    <None Remove="Resources\Icons\AddLink_16x.png" />
-    <None Remove="Resources\Icons\Add_16x.png" />
-    <None Remove="Resources\Icons\CheckboxList_16x.png" />
-    <None Remove="Resources\Icons\CollapseAll_16x.png" />
-    <None Remove="Resources\Icons\Edit_16x.png" />
-    <None Remove="Resources\Icons\ExpandAll_16x.png" />
-    <None Remove="Resources\Icons\Folder_16x.png" />
-    <None Remove="Resources\Icons\Home_16x.png" />
-    <None Remove="Resources\Icons\RemoveLink_16x.png" />
-    <None Remove="Resources\Icons\Search_16x.png" />
-    <None Remove="Resources\Icons\StatusCriticalError_16x.png" />
-    <None Remove="Resources\Icons\StatusOK_16x.png" />
-    <None Remove="Resources\Icons\StatusStop_16x.png" />
-    <None Remove="Resources\Icons\Tag_16x.png" />
+    <None Remove="Resources\Icons\TagsTreeCtrlCommands_AddDir_16x.png" />
+    <None Remove="Resources\Icons\TagsTreeCtrlCommands_AddTag_16x.png" />
+    <None Remove="Resources\Icons\TagsTreeCtrlCommands_AutoClearCheckMarks_16x.png" />
+    <None Remove="Resources\Icons\TagsTreeCtrlCommands_Bind_16x.png" />
+    <None Remove="Resources\Icons\TagsTreeCtrlCommands_ClearAllCheckMarks_16x.png" />
+    <None Remove="Resources\Icons\TagsTreeCtrlCommands_CollapseAllButThis_16x.png" />
+    <None Remove="Resources\Icons\TagsTreeCtrlCommands_CollapseAll_16x.png" />
+    <None Remove="Resources\Icons\TagsTreeCtrlCommands_DeleteChecked_16x.png" />
+    <None Remove="Resources\Icons\TagsTreeCtrlCommands_DeleteSelected_16x.png" />
+    <None Remove="Resources\Icons\TagsTreeCtrlCommands_ExpandAll_16x.png" />
+    <None Remove="Resources\Icons\TagsTreeCtrlCommands_InfiniteSearch_16x.png" />
+    <None Remove="Resources\Icons\TagsTreeCtrlCommands_MarkAllAsUndefined_16x.png" />
+    <None Remove="Resources\Icons\TagsTreeCtrlCommands_MarkCheckedAsExcludable_16x.png" />
+    <None Remove="Resources\Icons\TagsTreeCtrlCommands_MarkCheckedAsIncludable_16x.png" />
+    <None Remove="Resources\Icons\TagsTreeCtrlCommands_RenameSelected_16x.png" />
+    <None Remove="Resources\Icons\TagsTreeCtrlCommands_Unbind_16x.png" />
+    <None Remove="Resources\Icons\TagsTreeCtrl_Folder_16x.png" />
+    <None Remove="Resources\Icons\TagsTreeCtrl_Tag_16x.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Icons\AddAssociation_16x.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Resource Include="Resources\Icons\TagsTreeCtrlCommands_AddDir_16x.png">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Icons\AddFolder_16x.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Resource Include="Resources\Icons\TagsTreeCtrlCommands_Bind_16x.png">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Icons\AddItem_16x.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Resource Include="Resources\Icons\TagsTreeCtrlCommands_AddTag_16x.png">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Icons\AddLink_16x.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Resource Include="Resources\Icons\TagsTreeCtrlCommands_AutoClearCheckMarks_16x.png">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Icons\Add_16x.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Resource Include="Resources\Icons\TagsTreeCtrlCommands_CollapseAll_16x.png">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Icons\CheckboxList_16x.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Resource Include="Resources\Icons\TagsTreeCtrlCommands_DeleteChecked_16x.png" />
+    <Resource Include="Resources\Icons\TagsTreeCtrlCommands_DeleteSelected_16x.png">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Icons\CollapseAll_16x.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Resource Include="Resources\Icons\TagsTreeCtrlCommands_RenameSelected_16x.png">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Icons\Edit_16x.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Resource Include="Resources\Icons\TagsTreeCtrlCommands_ExpandAll_16x.png">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Icons\ExpandAll_16x.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Resource Include="Resources\Icons\TagsTreeCtrl_Folder_16x.png">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Icons\Folder_16x.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Resource Include="Resources\Icons\TagsTreeCtrlCommands_MarkAllAsUndefined_16x.png">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Icons\Home_16x.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Resource Include="Resources\Icons\TagsTreeCtrlCommands_Unbind_16x.png">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Icons\RemoveLink_16x.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Resource Include="Resources\Icons\TagsTreeCtrlCommands_InfiniteSearch_16x.png">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Icons\Search_16x.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Resource Include="Resources\Icons\TagsTreeCtrlCommands_ClearAllCheckMarks_16x.png">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Icons\StatusCriticalError_16x.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Resource Include="Resources\Icons\TagsTreeCtrlCommands_CollapseAllButThis_16x.png">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Icons\StatusOK_16x.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Resource Include="Resources\Icons\TagsTreeCtrlCommands_MarkCheckedAsIncludable_16x.png">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Icons\StatusStop_16x.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Resource Include="Resources\Icons\TagsTreeCtrlCommands_MarkCheckedAsExcludable_16x.png">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Icons\Tag_16x.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Resource Include="Resources\Icons\TagsTreeCtrl_Tag_16x.png">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
 

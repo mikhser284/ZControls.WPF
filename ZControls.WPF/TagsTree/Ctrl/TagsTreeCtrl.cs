@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
@@ -50,13 +51,13 @@ namespace ZControls.WPF.TagsTree.Ctrl
 
             BindCommand(TagsTreeCtrlCommands.AddDir, AddDir_Executed, AddDir_CanExecute);
             BindCommand(TagsTreeCtrlCommands.AddTag, AddTag_Executed, AddTag_CanExecute);
-            BindCommand(TagsTreeCtrlCommands.EditSelected, EditSelected_Executed, EditSelected_CanExecute);
+            BindCommand(TagsTreeCtrlCommands.RenameSelected, EditSelected_Executed, EditSelected_CanExecute);
             BindCommand(TagsTreeCtrlCommands.DeleteSelected, DeleteSelected_Executed, DeleteSelected_CanExecute);
             BindCommand(TagsTreeCtrlCommands.DeleteChecked, DeleteChecked_Executed, DeleteChecked_CanExecute);
             BindCommand(TagsTreeCtrlCommands.InvertCheckMark, InvertCheckMark_Executed, InvertCheckMark_CanExecute);
             BindCommand(TagsTreeCtrlCommands.SetCheckMark, SetCheckMark_Executed, SetCheckMark_CanExecute);
             BindCommand(TagsTreeCtrlCommands.RemoveCheckMark, RemoveCheckMark_Executed, RemoveCheckMark_CanExecute);
-            BindCommand(TagsTreeCtrlCommands.ClearAllCheckMark, ClearAllCheckMark_Executed, ClearAllCheckMark_CanExecute);
+            BindCommand(TagsTreeCtrlCommands.ClearAllCheckMarks, ClearAllCheckMark_Executed, ClearAllCheckMark_CanExecute);
             BindCommand(TagsTreeCtrlCommands.MarkCheckedAsIncludable, MarkCheckedAsIncludable_Executed, MarkCheckedAsIncludable_CanExecute);
             BindCommand(TagsTreeCtrlCommands.MarkCheckedAsExcludable, MarkCheckedAsExcludable_Executed, MarkCheckedAsExcludable_CanExecute);
             BindCommand(TagsTreeCtrlCommands.MarkAllAsUndefined, MarkAllAsUndefined_Executed, MarkAllAsUndefined_CanExecute);
@@ -67,7 +68,7 @@ namespace ZControls.WPF.TagsTree.Ctrl
             BindCommand(TagsTreeCtrlCommands.CollapseAllButThis, CollapseAllButThis_Executed, CollapseAllButThis_CanExecute);
 
             #endregion ————— Commands registration
-        }        
+        }
 
         private static void BindCommand(RoutedCommand command, ExecutedRoutedEventHandler executedHandler, CanExecuteRoutedEventHandler canExecuteHandler)
         {
@@ -84,38 +85,78 @@ namespace ZControls.WPF.TagsTree.Ctrl
     public partial class TagsTreeCtrl
     {
         private TreeView Part_TagsTree;
-        private ToggleButton Part_AutoClearSelection;
-        private Button Part_CollapseAllButThis;
-        private Button Part_ExpandAll;
-        private Button Part_ClearSelection;
-        private Button Part_MarkAllAsUndefined;
-        private ToggleButton Part_InfiniteSearch;
-        private Button Part_MarkCheckedAsIncludable;
-        private Button Part_MarkCheckedAsExcludable;
-        private Button Part_EditSelected;
-        private Button Part_AddFolder;
-        private Button Part_AddTag;
-        private Button Part_Bind;
-        private Button Part_Unbind;
-
+        //
+        private ToggleButton Part_AutoClearCheckMarks_Btn;
+        private Button Part_CollapseAllButThis_Btn;
+        private Button Part_ExpandAll_Btn;
+        private Button Part_ClearAllCheckMarks_Btn;
+        private Button Part_MarkAllAsUndefined_Btn;
+        private ToggleButton Part_InfiniteSearch_Btn;
+        private Button Part_MarkCheckedAsIncludable_Btn;
+        private Button Part_MarkCheckedAsExcludable_Btn;
+        private Button Part_RenameSelected_Btn;
+        private Button Part_AddFolder_Btn;
+        private Button Part_AddTag_Btn;
+        private Button Part_Bind_Btn;
+        private Button Part_Unbind_Btn;
+        //
+        private MenuItem Part_AddDir_Mnu;
+        private MenuItem Part_AddTag_Mnu;
+        private MenuItem Part_RenameSelected_Mnu;
+        private MenuItem Part_DeleteSelected_Mnu;
+        private MenuItem Part_DeleteChecked_Mnu;
+        private MenuItem Part_InvertCheckMark_Mnu;
+        private MenuItem Part_SetCheckMark_Mnu;
+        private MenuItem Part_RemoveCheckMark_Mnu;
+        private MenuItem Part_ClearAllCheckMarks_Mnu;
+        private MenuItem Part_AutoClearCheckMarks_Mnu;
+        private MenuItem Part_InfiniteSearch_Mnu;
+        private MenuItem Part_MarkCheckedAsIncludable_Mnu;
+        private MenuItem Part_MarkCheckedAsExcludable_Mnu;
+        private MenuItem Part_MarkAllAsUndefined_Mnu;
+        private MenuItem Part_Bind_Mnu;
+        private MenuItem Part_Unbind_Mnu;
+        private MenuItem Part_ExpandAll_Mnu;
+        private MenuItem Part_CollapseAll_Mnu;
+        private MenuItem Part_CollapseAllButThis_Mnu;        
 
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
             Part_TagsTree = FindTemplatePart<TreeView>(nameof(Part_TagsTree));
-            Part_AutoClearSelection = FindTemplatePart<ToggleButton>(nameof(Part_AutoClearSelection));
-            Part_CollapseAllButThis = FindTemplatePart<Button>(nameof(Part_CollapseAllButThis));
-            Part_ExpandAll = FindTemplatePart<Button>(nameof(Part_ExpandAll));
-            Part_ClearSelection = FindTemplatePart<Button>(nameof(Part_ClearSelection));
-            Part_MarkAllAsUndefined = FindTemplatePart<Button>(nameof(Part_MarkAllAsUndefined));
-            Part_InfiniteSearch = FindTemplatePart<ToggleButton>(nameof(Part_InfiniteSearch));
-            Part_MarkCheckedAsIncludable = FindTemplatePart<Button>(nameof(Part_MarkCheckedAsIncludable));
-            Part_MarkCheckedAsExcludable = FindTemplatePart<Button>(nameof(Part_MarkCheckedAsExcludable));
-            Part_EditSelected = FindTemplatePart<Button>(nameof(Part_EditSelected));
-            Part_AddFolder = FindTemplatePart<Button>(nameof(Part_AddFolder));
-            Part_AddTag = FindTemplatePart<Button>(nameof(Part_AddTag));
-            Part_Bind = FindTemplatePart<Button>(nameof(Part_Bind));
-            Part_Unbind = FindTemplatePart<Button>(nameof(Part_Unbind));
+            Part_AutoClearCheckMarks_Btn = FindTemplatePart<ToggleButton>(nameof(Part_AutoClearCheckMarks_Btn));
+            Part_CollapseAllButThis_Btn = FindTemplatePart<Button>(nameof(Part_CollapseAllButThis_Btn));
+            Part_ExpandAll_Btn = FindTemplatePart<Button>(nameof(Part_ExpandAll_Btn));
+            Part_ClearAllCheckMarks_Btn = FindTemplatePart<Button>(nameof(Part_ClearAllCheckMarks_Btn));
+            Part_MarkAllAsUndefined_Btn = FindTemplatePart<Button>(nameof(Part_MarkAllAsUndefined_Btn));
+            Part_InfiniteSearch_Btn = FindTemplatePart<ToggleButton>(nameof(Part_InfiniteSearch_Btn));
+            Part_MarkCheckedAsIncludable_Btn = FindTemplatePart<Button>(nameof(Part_MarkCheckedAsIncludable_Btn));
+            Part_MarkCheckedAsExcludable_Btn = FindTemplatePart<Button>(nameof(Part_MarkCheckedAsExcludable_Btn));
+            Part_RenameSelected_Btn = FindTemplatePart<Button>(nameof(Part_RenameSelected_Btn));
+            Part_AddFolder_Btn = FindTemplatePart<Button>(nameof(Part_AddFolder_Btn));
+            Part_AddTag_Btn = FindTemplatePart<Button>(nameof(Part_AddTag_Btn));
+            Part_Bind_Btn = FindTemplatePart<Button>(nameof(Part_Bind_Btn));
+            Part_Unbind_Btn = FindTemplatePart<Button>(nameof(Part_Unbind_Btn));
+            //
+            Part_AddDir_Mnu = FindTemplatePart<MenuItem>(nameof(Part_AddDir_Mnu));
+            Part_AddTag_Mnu = FindTemplatePart<MenuItem>(nameof(Part_AddTag_Mnu));
+            Part_RenameSelected_Mnu = FindTemplatePart<MenuItem>(nameof(Part_RenameSelected_Mnu));
+            Part_DeleteSelected_Mnu = FindTemplatePart<MenuItem>(nameof(Part_DeleteSelected_Mnu));
+            Part_DeleteChecked_Mnu = FindTemplatePart<MenuItem>(nameof(Part_DeleteChecked_Mnu));
+            Part_InvertCheckMark_Mnu = FindTemplatePart<MenuItem>(nameof(Part_InvertCheckMark_Mnu));
+            Part_SetCheckMark_Mnu = FindTemplatePart<MenuItem>(nameof(Part_SetCheckMark_Mnu));
+            Part_RemoveCheckMark_Mnu = FindTemplatePart<MenuItem>(nameof(Part_RemoveCheckMark_Mnu));
+            Part_ClearAllCheckMarks_Mnu = FindTemplatePart<MenuItem>(nameof(Part_ClearAllCheckMarks_Mnu));
+            Part_AutoClearCheckMarks_Mnu = FindTemplatePart<MenuItem>(nameof(Part_AutoClearCheckMarks_Mnu));
+            Part_InfiniteSearch_Mnu = FindTemplatePart<MenuItem>(nameof(Part_InfiniteSearch_Mnu));
+            Part_MarkCheckedAsIncludable_Mnu = FindTemplatePart<MenuItem>(nameof(Part_MarkCheckedAsIncludable_Mnu));
+            Part_MarkCheckedAsExcludable_Mnu = FindTemplatePart<MenuItem>(nameof(Part_MarkCheckedAsExcludable_Mnu));
+            Part_MarkAllAsUndefined_Mnu = FindTemplatePart<MenuItem>(nameof(Part_MarkAllAsUndefined_Mnu));
+            Part_Bind_Mnu = FindTemplatePart<MenuItem>(nameof(Part_Bind_Mnu));
+            Part_Unbind_Mnu = FindTemplatePart<MenuItem>(nameof(Part_Unbind_Mnu));
+            Part_ExpandAll_Mnu = FindTemplatePart<MenuItem>(nameof(Part_ExpandAll_Mnu));
+            Part_CollapseAll_Mnu = FindTemplatePart<MenuItem>(nameof(Part_CollapseAll_Mnu));
+            Part_CollapseAllButThis_Mnu = FindTemplatePart<MenuItem>(nameof(Part_CollapseAllButThis_Mnu));
             //
             SetUpTemplateParts();
         }
@@ -123,53 +164,200 @@ namespace ZControls.WPF.TagsTree.Ctrl
         private T FindTemplatePart<T>(String templatePartName) where T : DependencyObject
             => (GetTemplateChild(templatePartName) as T) ?? throw new NullReferenceException(templatePartName);
 
+        private String GetToolTipText(RoutedUICommand command)
+        {
+            KeyGesture keyGesture = command.InputGestures[0] as KeyGesture;
+            return keyGesture == null ? command.Text : $"{command.Text} [{keyGesture.GetDisplayStringForCulture(CultureInfo.CurrentCulture)}]";
+        }
+
         private void SetUpTemplateParts()
         {
+            Part_AutoClearCheckMarks_Btn.Content = GetImage(nameof(TagsTreeCtrlCommands.AutoClearCheckMarks));
+            Part_AutoClearCheckMarks_Btn.ToolTip = GetToolTipText(TagsTreeCtrlCommands.AutoClearCheckMarks);            
+            Part_AutoClearCheckMarks_Btn.IsChecked = true;
             //
-            Part_TagsTree.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.CollapseAllButThis, CollapseAllButThis_Executed, CollapseAllButThis_CanExecute));
-            Part_TagsTree.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.ExpandAll, ExpandAll_Executed, ExpandAll_CanExecute));
-            Part_TagsTree.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.ClearAllCheckMark, ClearAllCheckMark_Executed, ClearAllCheckMark_CanExecute));
-            Part_TagsTree.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.MarkAllAsUndefined, MarkAllAsUndefined_Executed, MarkAllAsUndefined_CanExecute));
-            Part_TagsTree.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.MarkCheckedAsIncludable, MarkCheckedAsIncludable_Executed, MarkCheckedAsIncludable_CanExecute));
-            Part_TagsTree.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.MarkCheckedAsExcludable, MarkCheckedAsExcludable_Executed, MarkCheckedAsExcludable_CanExecute));
-            Part_TagsTree.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.EditSelected, EditSelected_Executed, EditSelected_CanExecute));
-            Part_TagsTree.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.AddDir, AddDir_Executed, AddDir_CanExecute));
-            Part_TagsTree.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.AddTag, AddTag_Executed, AddTag_CanExecute));
-            Part_TagsTree.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.Bind, Bind_Executed, Bind_CanExecute));
-            Part_TagsTree.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.Unbind, Unbind_Executed, Unbind_CanExecute));
+            Part_InfiniteSearch_Btn.Content = GetImage(nameof(TagsTreeCtrlCommands.InfiniteSearch));
+            Part_InfiniteSearch_Btn.ToolTip = GetToolTipText(TagsTreeCtrlCommands.AutoClearCheckMarks);
+            Part_InfiniteSearch_Btn.IsChecked = true;
             //
-            Part_CollapseAllButThis.CommandTarget = Part_TagsTree;
-            Part_CollapseAllButThis.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.CollapseAllButThis, CollapseAllButThis_Executed, CollapseAllButThis_CanExecute));
+            Part_CollapseAllButThis_Btn.Content = GetImage(nameof(TagsTreeCtrlCommands.CollapseAllButThis));
+            Part_CollapseAllButThis_Btn.ToolTip = GetToolTipText(TagsTreeCtrlCommands.CollapseAllButThis);
+            Part_CollapseAllButThis_Btn.Command = TagsTreeCtrlCommands.CollapseAllButThis;
+            Part_CollapseAllButThis_Btn.CommandTarget = Part_TagsTree;
+            Part_CollapseAllButThis_Btn.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.CollapseAllButThis, CollapseAllButThis_Executed, CollapseAllButThis_CanExecute));
             //
-            Part_ExpandAll.CommandTarget = Part_TagsTree;
-            Part_ExpandAll.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.ExpandAll, ExpandAll_Executed, ExpandAll_CanExecute));
+            Part_ExpandAll_Btn.Content = GetImage(nameof(TagsTreeCtrlCommands.ExpandAll));
+            Part_ExpandAll_Btn.ToolTip = GetToolTipText(TagsTreeCtrlCommands.ExpandAll);
+            Part_ExpandAll_Btn.Command = TagsTreeCtrlCommands.ExpandAll;
+            Part_ExpandAll_Btn.CommandTarget = Part_TagsTree;
+            Part_ExpandAll_Btn.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.ExpandAll, ExpandAll_Executed, ExpandAll_CanExecute));
             //
-            Part_ClearSelection.CommandTarget = Part_TagsTree;
-            Part_ClearSelection.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.ClearAllCheckMark, ClearAllCheckMark_Executed, ClearAllCheckMark_CanExecute));
+            Part_ClearAllCheckMarks_Btn.Content = GetImage(nameof(TagsTreeCtrlCommands.ClearAllCheckMarks));
+            Part_ClearAllCheckMarks_Btn.ToolTip = GetToolTipText(TagsTreeCtrlCommands.ClearAllCheckMarks);
+            Part_ClearAllCheckMarks_Btn.Command = TagsTreeCtrlCommands.ClearAllCheckMarks;
+            Part_ClearAllCheckMarks_Btn.CommandTarget = Part_TagsTree;
+            Part_ClearAllCheckMarks_Btn.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.ClearAllCheckMarks, ClearAllCheckMark_Executed, ClearAllCheckMark_CanExecute));
             //
-            Part_MarkAllAsUndefined.CommandTarget = Part_TagsTree;
-            Part_MarkAllAsUndefined.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.MarkAllAsUndefined, MarkAllAsUndefined_Executed, MarkAllAsUndefined_CanExecute));
+            Part_MarkAllAsUndefined_Btn.Content = GetImage(nameof(TagsTreeCtrlCommands.MarkAllAsUndefined));
+            Part_MarkAllAsUndefined_Btn.ToolTip = GetToolTipText(TagsTreeCtrlCommands.MarkAllAsUndefined);
+            Part_MarkAllAsUndefined_Btn.Command = TagsTreeCtrlCommands.MarkAllAsUndefined;
+            Part_MarkAllAsUndefined_Btn.CommandTarget = Part_TagsTree;
+            Part_MarkAllAsUndefined_Btn.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.MarkAllAsUndefined, MarkAllAsUndefined_Executed, MarkAllAsUndefined_CanExecute));
             //
-            Part_MarkCheckedAsIncludable.CommandTarget = Part_TagsTree;
-            Part_MarkCheckedAsIncludable.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.MarkCheckedAsIncludable, MarkCheckedAsIncludable_Executed, MarkCheckedAsIncludable_CanExecute));
+            Part_MarkCheckedAsIncludable_Btn.Content = GetImage(nameof(TagsTreeCtrlCommands.MarkCheckedAsIncludable));
+            Part_MarkCheckedAsIncludable_Btn.ToolTip = GetToolTipText(TagsTreeCtrlCommands.MarkCheckedAsIncludable);
+            Part_MarkCheckedAsIncludable_Btn.Command = TagsTreeCtrlCommands.MarkCheckedAsIncludable;
+            Part_MarkCheckedAsIncludable_Btn.CommandTarget = Part_TagsTree;
+            Part_MarkCheckedAsIncludable_Btn.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.MarkCheckedAsIncludable, MarkCheckedAsIncludable_Executed, MarkCheckedAsIncludable_CanExecute));
             //
-            Part_MarkCheckedAsExcludable.CommandTarget = Part_TagsTree;
-            Part_MarkCheckedAsExcludable.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.MarkCheckedAsExcludable, MarkCheckedAsExcludable_Executed, MarkCheckedAsExcludable_CanExecute));
+            Part_MarkCheckedAsExcludable_Btn.Content = GetImage(nameof(TagsTreeCtrlCommands.MarkCheckedAsExcludable));
+            Part_MarkCheckedAsExcludable_Btn.ToolTip = GetToolTipText(TagsTreeCtrlCommands.MarkCheckedAsExcludable);
+            Part_MarkCheckedAsExcludable_Btn.Command = TagsTreeCtrlCommands.MarkCheckedAsExcludable;
+            Part_MarkCheckedAsExcludable_Btn.CommandTarget = Part_TagsTree;
+            Part_MarkCheckedAsExcludable_Btn.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.MarkCheckedAsExcludable, MarkCheckedAsExcludable_Executed, MarkCheckedAsExcludable_CanExecute));
             //
-            Part_EditSelected.CommandTarget = Part_TagsTree;
-            Part_EditSelected.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.EditSelected, EditSelected_Executed, EditSelected_CanExecute));
+            Part_RenameSelected_Btn.Content = GetImage(nameof(TagsTreeCtrlCommands.RenameSelected));
+            Part_RenameSelected_Btn.ToolTip = GetToolTipText(TagsTreeCtrlCommands.RenameSelected);
+            Part_RenameSelected_Btn.Command = TagsTreeCtrlCommands.RenameSelected;
+            Part_RenameSelected_Btn.CommandTarget = Part_TagsTree;
+            Part_RenameSelected_Btn.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.RenameSelected, EditSelected_Executed, EditSelected_CanExecute));
             //
-            Part_AddFolder.CommandTarget = Part_TagsTree;
-            Part_AddFolder.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.AddDir, AddDir_Executed, AddDir_CanExecute));
+            Part_AddFolder_Btn.Content = GetImage(nameof(TagsTreeCtrlCommands.AddDir));
+            Part_AddFolder_Btn.ToolTip = GetToolTipText(TagsTreeCtrlCommands.AddDir);
+            Part_AddFolder_Btn.Command = TagsTreeCtrlCommands.AddDir;
+            Part_AddFolder_Btn.CommandTarget = Part_TagsTree;
+            Part_AddFolder_Btn.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.AddDir, AddDir_Executed, AddDir_CanExecute));
             //
-            Part_AddTag.CommandTarget = Part_TagsTree;
-            Part_AddTag.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.AddTag, AddTag_Executed, AddTag_CanExecute));
+            Part_AddTag_Btn.Content = GetImage(nameof(TagsTreeCtrlCommands.AddTag));
+            Part_AddTag_Btn.ToolTip = GetToolTipText(TagsTreeCtrlCommands.AddTag);
+            Part_AddTag_Btn.Command = TagsTreeCtrlCommands.AddTag;
+            Part_AddTag_Btn.CommandTarget = this;
+            Part_AddTag_Btn.Command = TagsTreeCtrlCommands.AddTag;
+            Part_AddTag_Btn.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.AddTag, AddTag_Executed, AddTag_CanExecute));
             //
-            Part_Bind.CommandTarget = Part_TagsTree;
-            Part_Bind.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.Bind, Bind_Executed, Bind_CanExecute));
+            Part_Bind_Btn.Content = GetImage(nameof(TagsTreeCtrlCommands.Bind));
+            Part_Bind_Btn.ToolTip = GetToolTipText(TagsTreeCtrlCommands.Bind);
+            Part_Bind_Btn.Command = TagsTreeCtrlCommands.Bind;
+            Part_Bind_Btn.CommandTarget = Part_TagsTree;
+            Part_Bind_Btn.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.Bind, Bind_Executed, Bind_CanExecute));
             //
-            Part_Unbind.CommandTarget = Part_TagsTree;
-            Part_Unbind.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.Unbind, Unbind_Executed, Unbind_CanExecute));
+            Part_Unbind_Btn.Content = GetImage(nameof(TagsTreeCtrlCommands.Unbind));
+            Part_Unbind_Btn.ToolTip = GetToolTipText(TagsTreeCtrlCommands.Unbind);
+            Part_Unbind_Btn.Command = TagsTreeCtrlCommands.Unbind;
+            Part_Unbind_Btn.CommandTarget = Part_TagsTree;
+            Part_Unbind_Btn.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.Unbind, Unbind_Executed, Unbind_CanExecute));
+            //
+            Part_AddTag_Mnu.Icon = GetImage(nameof(TagsTreeCtrlCommands.AddTag));
+            Part_AddTag_Mnu.Header = TagsTreeCtrlCommands.AddTag.Text;
+            Part_AddTag_Mnu.CommandTarget = this;
+            Part_AddTag_Mnu.Command = TagsTreeCtrlCommands.AddTag;
+            Part_AddTag_Mnu.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.AddTag, AddTag_Executed, AddTag_CanExecute));
+            //
+            Part_AddDir_Mnu.Icon = GetImage(nameof(TagsTreeCtrlCommands.AddDir));
+            Part_AddDir_Mnu.Header = TagsTreeCtrlCommands.AddDir.Text;
+            Part_AddDir_Mnu.CommandTarget = this;
+            Part_AddDir_Mnu.Command = TagsTreeCtrlCommands.AddDir;
+            Part_AddDir_Mnu.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.AddDir, AddTag_Executed, AddTag_CanExecute));
+            //
+            Part_RenameSelected_Mnu.Icon = GetImage(nameof(TagsTreeCtrlCommands.RenameSelected));
+            Part_RenameSelected_Mnu.Header = TagsTreeCtrlCommands.RenameSelected.Text;
+            Part_RenameSelected_Mnu.CommandTarget = this;
+            Part_RenameSelected_Mnu.Command = TagsTreeCtrlCommands.RenameSelected;
+            Part_RenameSelected_Mnu.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.RenameSelected, AddTag_Executed, AddTag_CanExecute));
+            //
+            Part_DeleteSelected_Mnu.Icon = GetImage(nameof(TagsTreeCtrlCommands.DeleteSelected));
+            Part_DeleteSelected_Mnu.Header = TagsTreeCtrlCommands.DeleteSelected.Text;
+            Part_DeleteSelected_Mnu.CommandTarget = this;
+            Part_DeleteSelected_Mnu.Command = TagsTreeCtrlCommands.DeleteSelected;
+            Part_DeleteSelected_Mnu.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.DeleteSelected, AddTag_Executed, AddTag_CanExecute));
+            //
+            Part_DeleteChecked_Mnu.Icon = GetImage(nameof(TagsTreeCtrlCommands.DeleteChecked));
+            Part_DeleteChecked_Mnu.Header = TagsTreeCtrlCommands.DeleteChecked.Text;
+            Part_DeleteChecked_Mnu.CommandTarget = this;
+            Part_DeleteChecked_Mnu.Command = TagsTreeCtrlCommands.DeleteChecked;
+            Part_DeleteChecked_Mnu.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.DeleteChecked, AddTag_Executed, AddTag_CanExecute));
+            //            
+            Part_InvertCheckMark_Mnu.Header = TagsTreeCtrlCommands.InvertCheckMark.Text;
+            Part_InvertCheckMark_Mnu.CommandTarget = this;
+            Part_InvertCheckMark_Mnu.Command = TagsTreeCtrlCommands.InvertCheckMark;
+            Part_InvertCheckMark_Mnu.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.InvertCheckMark, AddTag_Executed, AddTag_CanExecute));
+            //
+            Part_SetCheckMark_Mnu.Header = TagsTreeCtrlCommands.SetCheckMark.Text;
+            Part_SetCheckMark_Mnu.CommandTarget = this;
+            Part_SetCheckMark_Mnu.Command = TagsTreeCtrlCommands.SetCheckMark;
+            Part_SetCheckMark_Mnu.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.SetCheckMark, AddTag_Executed, AddTag_CanExecute));
+            //
+            Part_RemoveCheckMark_Mnu.Header = TagsTreeCtrlCommands.RemoveCheckMark.Text;
+            Part_RemoveCheckMark_Mnu.CommandTarget = this;
+            Part_RemoveCheckMark_Mnu.Command = TagsTreeCtrlCommands.RemoveCheckMark;
+            Part_RemoveCheckMark_Mnu.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.RemoveCheckMark, AddTag_Executed, AddTag_CanExecute));
+            //
+            Part_ClearAllCheckMarks_Mnu.Icon = GetImage(nameof(TagsTreeCtrlCommands.ClearAllCheckMarks));
+            Part_ClearAllCheckMarks_Mnu.Header = TagsTreeCtrlCommands.ClearAllCheckMarks.Text;
+            Part_ClearAllCheckMarks_Mnu.CommandTarget = this;
+            Part_ClearAllCheckMarks_Mnu.Command = TagsTreeCtrlCommands.ClearAllCheckMarks;
+            Part_ClearAllCheckMarks_Mnu.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.ClearAllCheckMarks, AddTag_Executed, AddTag_CanExecute));
+            //
+            Part_AutoClearCheckMarks_Mnu.Icon = GetImage(nameof(TagsTreeCtrlCommands.AutoClearCheckMarks));
+            Part_AutoClearCheckMarks_Mnu.Header = TagsTreeCtrlCommands.AutoClearCheckMarks.Text;
+            Part_AutoClearCheckMarks_Mnu.CommandTarget = this;
+            Part_AutoClearCheckMarks_Mnu.Command = TagsTreeCtrlCommands.AutoClearCheckMarks;
+            Part_AutoClearCheckMarks_Mnu.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.AutoClearCheckMarks, AddTag_Executed, AddTag_CanExecute));
+            //
+            Part_InfiniteSearch_Mnu.Icon = GetImage(nameof(TagsTreeCtrlCommands.InfiniteSearch));
+            Part_InfiniteSearch_Mnu.Header = TagsTreeCtrlCommands.InfiniteSearch.Text;
+            Part_InfiniteSearch_Mnu.CommandTarget = this;
+            Part_InfiniteSearch_Mnu.Command = TagsTreeCtrlCommands.InfiniteSearch;
+            Part_InfiniteSearch_Mnu.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.InfiniteSearch, AddTag_Executed, AddTag_CanExecute));
+            //
+            Part_MarkCheckedAsIncludable_Mnu.Icon = GetImage(nameof(TagsTreeCtrlCommands.MarkCheckedAsIncludable));
+            Part_MarkCheckedAsIncludable_Mnu.Header = TagsTreeCtrlCommands.MarkCheckedAsIncludable.Text;
+            Part_MarkCheckedAsIncludable_Mnu.CommandTarget = this;
+            Part_MarkCheckedAsIncludable_Mnu.Command = TagsTreeCtrlCommands.MarkCheckedAsIncludable;
+            Part_MarkCheckedAsIncludable_Mnu.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.MarkCheckedAsIncludable, AddTag_Executed, AddTag_CanExecute));
+            //
+            Part_MarkCheckedAsExcludable_Mnu.Icon = GetImage(nameof(TagsTreeCtrlCommands.MarkCheckedAsExcludable));
+            Part_MarkCheckedAsExcludable_Mnu.Header = TagsTreeCtrlCommands.MarkCheckedAsExcludable.Text;
+            Part_MarkCheckedAsExcludable_Mnu.CommandTarget = this;
+            Part_MarkCheckedAsExcludable_Mnu.Command = TagsTreeCtrlCommands.MarkCheckedAsExcludable;
+            Part_MarkCheckedAsExcludable_Mnu.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.MarkCheckedAsExcludable, AddTag_Executed, AddTag_CanExecute));
+            //
+            Part_MarkAllAsUndefined_Mnu.Icon = GetImage(nameof(TagsTreeCtrlCommands.MarkAllAsUndefined));
+            Part_MarkAllAsUndefined_Mnu.Header = TagsTreeCtrlCommands.MarkAllAsUndefined.Text;
+            Part_MarkAllAsUndefined_Mnu.CommandTarget = this;
+            Part_MarkAllAsUndefined_Mnu.Command = TagsTreeCtrlCommands.MarkAllAsUndefined;
+            Part_MarkAllAsUndefined_Mnu.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.MarkAllAsUndefined, AddTag_Executed, AddTag_CanExecute));
+            //
+            Part_Bind_Mnu.Icon = GetImage(nameof(TagsTreeCtrlCommands.Bind));
+            Part_Bind_Mnu.Header = TagsTreeCtrlCommands.Bind.Text;
+            Part_Bind_Mnu.CommandTarget = this;
+            Part_Bind_Mnu.Command = TagsTreeCtrlCommands.Bind;
+            Part_Bind_Mnu.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.Bind, AddTag_Executed, AddTag_CanExecute));
+            //
+            Part_Unbind_Mnu.Icon = GetImage(nameof(TagsTreeCtrlCommands.Unbind));
+            Part_Unbind_Mnu.Header = TagsTreeCtrlCommands.Unbind.Text;
+            Part_Unbind_Mnu.CommandTarget = this;
+            Part_Unbind_Mnu.Command = TagsTreeCtrlCommands.Unbind;
+            Part_Unbind_Mnu.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.Unbind, AddTag_Executed, AddTag_CanExecute));
+            //
+            Part_ExpandAll_Mnu.Icon = GetImage(nameof(TagsTreeCtrlCommands.ExpandAll));
+            Part_ExpandAll_Mnu.Header = TagsTreeCtrlCommands.ExpandAll.Text;
+            Part_ExpandAll_Mnu.CommandTarget = this;
+            Part_ExpandAll_Mnu.Command = TagsTreeCtrlCommands.ExpandAll;
+            Part_ExpandAll_Mnu.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.ExpandAll, AddTag_Executed, AddTag_CanExecute));
+            //
+            Part_CollapseAll_Mnu.Icon = GetImage(nameof(TagsTreeCtrlCommands.CollapseAll));
+            Part_CollapseAll_Mnu.Header = TagsTreeCtrlCommands.CollapseAll.Text;
+            Part_CollapseAll_Mnu.CommandTarget = this;
+            Part_CollapseAll_Mnu.Command = TagsTreeCtrlCommands.CollapseAll;
+            Part_CollapseAll_Mnu.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.CollapseAll, AddTag_Executed, AddTag_CanExecute));
+            //
+            Part_CollapseAllButThis_Mnu.Icon = GetImage(nameof(TagsTreeCtrlCommands.CollapseAllButThis));
+            Part_CollapseAllButThis_Mnu.Header = TagsTreeCtrlCommands.CollapseAllButThis.Text;
+            Part_CollapseAllButThis_Mnu.CommandTarget = this;
+            Part_CollapseAllButThis_Mnu.Command = TagsTreeCtrlCommands.CollapseAllButThis;
+            Part_CollapseAllButThis_Mnu.CommandBindings.Add(new CommandBinding(TagsTreeCtrlCommands.CollapseAllButThis, AddTag_Executed, AddTag_CanExecute));
+            //
             //
             Temp_SetupItemsCollection();
         }
@@ -240,7 +428,7 @@ namespace ZControls.WPF.TagsTree.Ctrl
 
         private static void AddDir_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-
+            e.CanExecute = false;
         }
 
         #endregion ————— AddDir
@@ -254,7 +442,7 @@ namespace ZControls.WPF.TagsTree.Ctrl
 
         private static void AddTag_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            MessageBox.Show($"Command {e.Command} not implemented");
+            e.CanExecute = false;
         }
 
         #endregion ————— AddTag
@@ -268,7 +456,7 @@ namespace ZControls.WPF.TagsTree.Ctrl
 
         private static void EditSelected_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-
+            e.CanExecute = false;
         }
 
         #endregion ————— EditSelected
@@ -282,7 +470,7 @@ namespace ZControls.WPF.TagsTree.Ctrl
 
         private static void DeleteSelected_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-
+            e.CanExecute = false;
         }
 
         #endregion ————— DeleteSelected
@@ -296,7 +484,7 @@ namespace ZControls.WPF.TagsTree.Ctrl
 
         private static void DeleteChecked_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-
+            e.CanExecute = false;
         }
 
         #endregion ————— DeleteChecked
@@ -310,7 +498,7 @@ namespace ZControls.WPF.TagsTree.Ctrl
 
         private static void InvertCheckMark_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-
+            e.CanExecute = false;
         }
 
         #endregion ————— InvertCheckMark
@@ -324,7 +512,7 @@ namespace ZControls.WPF.TagsTree.Ctrl
 
         private static void SetCheckMark_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-
+            e.CanExecute = false;
         }
 
         #endregion ————— SetCheckMark
@@ -338,7 +526,7 @@ namespace ZControls.WPF.TagsTree.Ctrl
 
         private static void RemoveCheckMark_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-
+            e.CanExecute = false;
         }
 
         #endregion ————— RemoveCheckMark
@@ -352,7 +540,7 @@ namespace ZControls.WPF.TagsTree.Ctrl
 
         private static void ClearAllCheckMark_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-
+            e.CanExecute = false;
         }
 
         #endregion ————— ClearAllCheckMark
@@ -366,7 +554,7 @@ namespace ZControls.WPF.TagsTree.Ctrl
 
         private static void MarkCheckedAsIncludable_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-
+            e.CanExecute = false;
         }
 
         #endregion ————— MarkCheckedAsIncludable
@@ -380,7 +568,7 @@ namespace ZControls.WPF.TagsTree.Ctrl
 
         private static void MarkCheckedAsExcludable_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-
+            e.CanExecute = false;
         }
 
         #endregion ————— MarkCheckedAsExcludable
@@ -394,7 +582,7 @@ namespace ZControls.WPF.TagsTree.Ctrl
 
         private static void MarkAllAsUndefined_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-
+            e.CanExecute = false;
         }
 
         #endregion ————— MarkAllAsUndefined
@@ -408,7 +596,7 @@ namespace ZControls.WPF.TagsTree.Ctrl
 
         private static void Bind_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-
+            e.CanExecute = false;
         }
 
         #endregion ————— Bind
@@ -422,7 +610,7 @@ namespace ZControls.WPF.TagsTree.Ctrl
 
         private static void Unbind_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-
+            e.CanExecute = false;
         }
 
         #endregion ————— Unbind
@@ -436,7 +624,7 @@ namespace ZControls.WPF.TagsTree.Ctrl
 
         private static void ExpandAll_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-
+            e.CanExecute = false;
         }
 
         #endregion ————— ExpandAll
@@ -450,7 +638,7 @@ namespace ZControls.WPF.TagsTree.Ctrl
 
         private static void CollapseAll_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-
+            e.CanExecute = false;
         }
 
         #endregion ————— CollapseAll
@@ -464,7 +652,7 @@ namespace ZControls.WPF.TagsTree.Ctrl
 
         private static void CollapseAllButThis_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-
+            e.CanExecute = false;
         }
 
         #endregion ————— CollapseAllButThis
@@ -498,6 +686,21 @@ namespace ZControls.WPF.TagsTree.Ctrl
             Part_TagsTree.ItemsSource = dirs;
 
         }
+
+        //private static Dictionary<String, Image> ImageResources = new Dictionary<string, Image>();
+
+        private static Image GetImage(String imageName)
+        {
+            
+            BitmapImage bitmapImage = new BitmapImage(new Uri($"pack://application:,,,/ZControls.WPF;component/Resources/Icons/TagsTreeCtrlCommands_{imageName}_16x.png", UriKind.RelativeOrAbsolute));
+            Image image = new Image();
+            image.Source = bitmapImage;
+            //ImageResources.Add(imageName, image);
+            return image;
+        }
     }
     #endregion ■■■■■ Temp
+
+
+    
 }

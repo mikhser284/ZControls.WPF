@@ -2,10 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ctrl="clr-namespace:ZControls.WPF.TagsTree.Ctrl"
                     xmlns:aux="clr-namespace:ZControls.WPF.TagsTree.CtrlAux"
-                    xmlns:dm="clr-namespace:ZControls.WPF.TagsTree.DataModel"
-                    >
-    
-
+                    xmlns:dm="clr-namespace:ZControls.WPF.TagsTree.DataModel">    
     <Style TargetType="{x:Type ctrl:TagsTreeCtrl}">
 
         <Setter Property="Template">
@@ -22,7 +19,6 @@
                                 <RowDefinition Height="Auto" MinHeight="10"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-
                             <ScrollViewer Grid.Column="0" Grid.Row="0"
                                           VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                                 <StackPanel Orientation="Horizontal" UseLayoutRounding="True" SnapsToDevicePixels="True" Background="#CFD6E5">
@@ -31,80 +27,34 @@
                                             <Setter Property="Background" Value="Transparent"/>
                                             <Setter Property="BorderBrush" Value="Transparent"/>
                                             <Setter Property="Margin" Value="2"/>
+                                            <Setter Property="Focusable" Value="False"/>
                                         </Style>
                                         <Style x:Key="FlatToggleButton" TargetType="{x:Type ToggleButton}">
                                             <Setter Property="Background" Value="Transparent"/>
                                             <Setter Property="BorderBrush" Value="Transparent"/>
                                             <Setter Property="Margin" Value="2"/>
                                             <Setter Property="BorderThickness" Value="1"/>
+                                            <Setter Property="Focusable" Value="False"/>
                                         </Style>
                                     </StackPanel.Resources>
-                                    <ToggleButton x:Name="Part_AutoClearSelection" ToolTip="Снимать отметки после выполнения операции" IsChecked="True"
-                                                  Style="{StaticResource FlatToggleButton}">                                        
-                                        <Image Source="/ZControls.WPF;component/Resources/Icons/CheckboxList_16x.png"/>
-                                    </ToggleButton>
-                                    <Button x:Name="Part_CollapseAllButThis" ToolTip="Свернуть все кроме этой ветки"
-                                            Style="{StaticResource FlatButton}">
-                                        <Image Source="/ZControls.WPF;component/Resources/Icons/CollapseAll_16x.png"/>
-                                    </Button>
-                                    <Button x:Name="Part_ExpandAll" ToolTip="Развернуть все" MinHeight="20" MinWidth="20"
-                                            Style="{StaticResource FlatButton}">
-                                        <Image Source="/ZControls.WPF;component/Resources/Icons/ExpandAll_16x.png"/>
-                                    </Button>
-                                    <Button x:Name="Part_ClearSelection" ToolTip="Снять все отметки"
-                                                  Style="{StaticResource FlatButton}">
-                                        <Image Source="/ZControls.WPF;component/Resources/Icons/AddAssociation_16x.png"/>
-                                    </Button>
-
-
+                                    <ToggleButton x:Name="Part_AutoClearCheckMarks_Btn" Style="{StaticResource FlatToggleButton}"/>
+                                    <Button x:Name="Part_ClearAllCheckMarks_Btn" Style="{StaticResource FlatButton}"/>
+                                    <Button x:Name="Part_CollapseAllButThis_Btn" Style="{StaticResource FlatButton}"/>
+                                    <Button x:Name="Part_ExpandAll_Btn" Style="{StaticResource FlatButton}"/>
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
-
-                                    <Button x:Name="Part_MarkAllAsUndefined" ToolTip="Снять влияние на результаты поиска со всех"
-                                            Style="{StaticResource FlatButton}">
-                                        <Image Source="/ZControls.WPF;component/Resources/Icons/Home_16x.png"/>
-                                    </Button>
-                                    <ToggleButton x:Name="Part_InfiniteSearch" ToolTip="Непрерывный поиск" IsChecked="True"
-                                                  Style="{StaticResource FlatToggleButton}">
-                                        <Image Source="/ZControls.WPF;component/Resources/Icons/Search_16x.png"/>
-                                    </ToggleButton>
-                                    <Button x:Name="Part_MarkCheckedAsIncludable" ToolTip="Включать в результаты поиска"
-                                            Style="{StaticResource FlatButton}">
-                                        <Image Source="/ZControls.WPF;component/Resources/Icons/StatusOK_16x.png"/>
-                                    </Button>
-                                    <Button x:Name="Part_MarkCheckedAsExcludable" ToolTip="Исключать из результатов поиска"
-                                            Style="{StaticResource FlatButton}">
-                                        <Image Source="/ZControls.WPF;component/Resources/Icons/StatusStop_16x.png"/>
-                                    </Button>
-
+                                    <Button x:Name="Part_MarkAllAsUndefined_Btn" Style="{StaticResource FlatButton}"/>
+                                    <ToggleButton x:Name="Part_InfiniteSearch_Btn" Style="{StaticResource FlatToggleButton}"/>
+                                    <Button x:Name="Part_MarkCheckedAsIncludable_Btn" Style="{StaticResource FlatButton}"/>
+                                    <Button x:Name="Part_MarkCheckedAsExcludable_Btn" Style="{StaticResource FlatButton}"/>
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
-
-                                    <Button x:Name="Part_EditSelected" ToolTip="Редактировать"
-                                            Style="{StaticResource FlatButton}">
-                                        <Image Source="/ZControls.WPF;component/Resources/Icons/Edit_16x.png" />
-                                    </Button>
-                                    <Button x:Name="Part_AddFolder" ToolTip="Создать папку"
-                                            Style="{StaticResource FlatButton}">
-                                        <Image Source="/ZControls.WPF;component/Resources/Icons/AddFolder_16x.png"/>
-                                    </Button>
-                                    <Button x:Name="Part_AddTag" ToolTip="Создать тег"
-                                            Style="{StaticResource FlatButton}">
-                                        <Image Source="/ZControls.WPF;component/Resources/Icons/Add_16x.png"/>
-                                    </Button>
-
+                                    <Button x:Name="Part_RenameSelected_Btn" Style="{StaticResource FlatButton}"/>
+                                    <Button x:Name="Part_AddFolder_Btn" Style="{StaticResource FlatButton}"/>
+                                    <Button x:Name="Part_AddTag_Btn" Style="{StaticResource FlatButton}"/>
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
-
-                                    <Button x:Name="Part_Bind" ToolTip="Связать"
-                                            Style="{StaticResource FlatButton}">
-                                        <Image Source="/ZControls.WPF;component/Resources/Icons/AddLink_16x.png"/>
-                                    </Button>
-                                    <Button x:Name="Part_Unbind" ToolTip="Отвязать"
-                                            Style="{StaticResource FlatButton}">
-                                        <Image Source="/ZControls.WPF;component/Resources/Icons/RemoveLink_16x.png"/>
-                                    </Button>
-
+                                    <Button x:Name="Part_Bind_Btn" Style="{StaticResource FlatButton}"/>
+                                    <Button x:Name="Part_Unbind_Btn" Style="{StaticResource FlatButton}"/>
                                 </StackPanel>
                             </ScrollViewer>
-
                             <TreeView x:Name="Part_TagsTree" Grid.Column="0" Grid.Row="1">
                                 <TreeView.Resources>
                                     <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#BFCDDB"/>
@@ -113,7 +63,7 @@
                                         <StackPanel Orientation="Horizontal">
                                             <CheckBox IsChecked="{Binding Path=CheckMark}" Focusable="False" VerticalAlignment="Center"/>
                                             <TextBlock VerticalAlignment="Center">
-                                                <Image Source="/ZControls.WPF;component/Resources/Icons/Folder_16x.png" VerticalAlignment="Center"/>
+                                                <Image Source="/ZControls.WPF;component/Resources/Icons/TagsTreeCtrl_Folder_16x.png" VerticalAlignment="Center"/>
                                                 <Run Text="{Binding Path=Name}"/>
                                             </TextBlock>
                                         </StackPanel>
@@ -122,7 +72,7 @@
                                         <StackPanel Orientation="Horizontal">
                                             <CheckBox IsChecked="{Binding Path=CheckMark}" Focusable="False" VerticalAlignment="Center"/>
                                             <TextBlock VerticalAlignment="Center">
-                                                <Image Source="/ZControls.WPF;component/Resources/Icons/Tag_16x.png" VerticalAlignment="Center"/>
+                                                <Image Source="/ZControls.WPF;component/Resources/Icons/TagsTreeCtrl_Tag_16x.png" VerticalAlignment="Center"/>
                                                 <Run Text="{Binding Path=Name}"/>
                                             </TextBlock>
                                         </StackPanel>
@@ -130,10 +80,32 @@
                                 </TreeView.Resources>
                                 <TreeView.ContextMenu>
                                     <ContextMenu>
-                                        <MenuItem Header="Menu item">
-
+                                        <MenuItem Name="Part_InfiniteSearch_Mnu"/>
+                                        <MenuItem Name="Part_AutoClearCheckMarks_Mnu"/>
+                                        <Separator/>
+                                        <MenuItem Name="Part_CollapseAllButThis_Mnu"/>
+                                        <MenuItem Name="Part_CollapseAll_Mnu"/>
+                                        <MenuItem Name="Part_ExpandAll_Mnu"/>
+                                        <Separator/>
+                                        <MenuItem Name="Part_ClearAllCheckMarks_Mnu"/>
+                                        <MenuItem Name="Part_InvertCheckMark_Mnu"/>
+                                        <MenuItem Name="Part_SetCheckMark_Mnu"/>
+                                        <MenuItem Name="Part_RemoveCheckMark_Mnu"/>
+                                        <Separator/>
+                                        <MenuItem Name="Part_MarkCheckedAsIncludable_Mnu"/>
+                                        <MenuItem Name="Part_MarkCheckedAsExcludable_Mnu"/>
+                                        <MenuItem Name="Part_MarkAllAsUndefined_Mnu"/>
+                                        <Separator/>
+                                        <MenuItem Name="Part_Bind_Mnu"/>
+                                        <MenuItem Name="Part_Unbind_Mnu"/>
+                                        <Separator/>
+                                        <MenuItem Name="Part_AddTag_Mnu"/>
+                                        <MenuItem Name="Part_AddDir_Mnu"/>
+                                        <MenuItem Name="Part_RenameSelected_Mnu"/>
+                                        <MenuItem Header="Удалить">
+                                            <MenuItem Name="Part_DeleteSelected_Mnu"/>
+                                            <MenuItem Name="Part_DeleteChecked_Mnu"/>
                                         </MenuItem>
-
                                     </ContextMenu>
                                 </TreeView.ContextMenu>
                             </TreeView>

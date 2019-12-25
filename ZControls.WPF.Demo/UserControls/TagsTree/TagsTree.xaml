@@ -152,7 +152,7 @@
                     <MenuItem Header="Добавить тег" Command="local:CommandsOfTagsTree.AddTag"/>
                     <MenuItem Header="Редактировать елемент" Command="local:CommandsOfTagsTree.EditItems"/>
                     <MenuItem Header="Удаление">
-                        <MenuItem Header="Удалить отмеченные елементы" />
+                        <MenuItem Name="Part" Header="Удалить отмеченные елементы" />
                     </MenuItem>
                     <Separator/>
                     <MenuItem Header="Связать" Command="local:CommandsOfTagsTree.BindItem"/>
