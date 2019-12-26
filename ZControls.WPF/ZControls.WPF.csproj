@@ -22,7 +22,7 @@
     <None Remove="Resources\Icons\TagsTreeCtrlCommands_MarkCheckedAsIncludable_16x.png" />
     <None Remove="Resources\Icons\TagsTreeCtrlCommands_RenameSelected_16x.png" />
     <None Remove="Resources\Icons\TagsTreeCtrlCommands_Unbind_16x.png" />
-    <None Remove="Resources\Icons\TagsTreeCtrl_Folder_16x.png" />
+    <None Remove="Resources\Icons\TagsTreeCtrl_Dir_16x.png" />
     <None Remove="Resources\Icons\TagsTreeCtrl_Tag_16x.png" />
   </ItemGroup>
 
@@ -52,7 +52,7 @@
     <Resource Include="Resources\Icons\TagsTreeCtrlCommands_ExpandAll_16x.png">
       <CopyToOutputDirectory></CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Icons\TagsTreeCtrl_Folder_16x.png">
+    <Resource Include="Resources\Icons\TagsTreeCtrl_Dir_16x.png">
       <CopyToOutputDirectory></CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Icons\TagsTreeCtrlCommands_MarkAllAsUndefined_16x.png">

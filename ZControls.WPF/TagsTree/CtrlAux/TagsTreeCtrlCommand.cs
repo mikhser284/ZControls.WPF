@@ -12,27 +12,27 @@ namespace ZControls.WPF.TagsTree.CtrlAux
 
         // ▬▬▬▬▬
 
-        public static readonly RoutedUICommand AddDir = NewCommand(nameof(AddDir)
-                , "Добавить папку"
+        public static readonly RoutedUICommand CollapseAllButThis = NewCommand(nameof(CollapseAllButThis)
+                , "Свернуть все кроме этой ветки"
+                , new KeyGesture(Key.Add, ModifierKeys.Control));
+
+        public static readonly RoutedUICommand CollapseAll = NewCommand(nameof(CollapseAll)
+                , "Свернуть все"
                 , new KeyGesture(Key.Add, ModifierKeys.Control | ModifierKeys.Shift));
 
-        public static readonly RoutedUICommand AddTag = NewCommand(nameof(AddTag)
-                , "Добавить тег"
-                , new KeyGesture(Key.Q, ModifierKeys.Control));
-
-        public static readonly RoutedUICommand RenameSelected = NewCommand(nameof(RenameSelected)
-                , "Переименовать"
-                , new KeyGesture(Key.F2));
-
-        public static readonly RoutedUICommand DeleteSelected = NewCommand(nameof(DeleteSelected)
-                , "Удалить выделеный елемент"
-                , new KeyGesture(Key.Delete, ModifierKeys.Control));
-
-        public static readonly RoutedUICommand DeleteChecked = NewCommand(nameof(DeleteChecked)
-                , "Удалить отмеченные елементы"
-                , new KeyGesture(Key.Delete, ModifierKeys.Control | ModifierKeys.Shift));
+        public static readonly RoutedUICommand ExpandAll = NewCommand(nameof(ExpandAll)
+                , "Развернуть все"
+                , new KeyGesture(Key.Subtract, ModifierKeys.Control | ModifierKeys.Shift));
 
         // -----
+
+        public static readonly RoutedUICommand AutoClearCheckMarks = NewCommand(nameof(AutoClearCheckMarks)
+                , "Снимать метки автоматически"
+                , new KeyGesture(Key.W, ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt));
+
+        public static readonly RoutedUICommand ClearAllCheckMarks = NewCommand(nameof(ClearAllCheckMarks)
+                , "Снять все метки"
+                , new KeyGesture(Key.Space, ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt));
 
         public static readonly RoutedUICommand InvertCheckMark = NewCommand(nameof(InvertCheckMark)
                 , "Обратить метку"
@@ -45,14 +45,6 @@ namespace ZControls.WPF.TagsTree.CtrlAux
         public static readonly RoutedUICommand RemoveCheckMark = NewCommand(nameof(RemoveCheckMark)
                 , "Снять метку"
                 , new KeyGesture(Key.Space, ModifierKeys.Control | ModifierKeys.Shift));
-
-        public static readonly RoutedUICommand ClearAllCheckMarks = NewCommand(nameof(ClearAllCheckMarks)
-                , "Снять все метки"
-                , new KeyGesture(Key.Space, ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt));
-
-        public static readonly RoutedUICommand AutoClearCheckMarks = NewCommand(nameof(AutoClearCheckMarks)
-                , "Снимать метки автоматически"
-                , new KeyGesture(Key.W, ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt));
 
         // -----
 
@@ -84,16 +76,25 @@ namespace ZControls.WPF.TagsTree.CtrlAux
 
         // -----
 
-        public static readonly RoutedUICommand ExpandAll = NewCommand(nameof(ExpandAll)
-                , "Развернуть все"
-                , new KeyGesture(Key.Subtract, ModifierKeys.Control | ModifierKeys.Shift));
+        public static readonly RoutedUICommand AddTag = NewCommand(nameof(AddTag)
+                , "Добавить тег"
+                , new KeyGesture(Key.Q, ModifierKeys.Control));
 
-        public static readonly RoutedUICommand CollapseAll = NewCommand(nameof(CollapseAll)
-                , "Свернуть все"
+        public static readonly RoutedUICommand AddDir = NewCommand(nameof(AddDir)
+                , "Добавить папку"
                 , new KeyGesture(Key.Add, ModifierKeys.Control | ModifierKeys.Shift));
 
-        public static readonly RoutedUICommand CollapseAllButThis = NewCommand(nameof(CollapseAllButThis)
-                , "Свернуть все кроме этой ветки"
-                , new KeyGesture(Key.Add, ModifierKeys.Control));
+        public static readonly RoutedUICommand RenameSelected = NewCommand(nameof(RenameSelected)
+                , "Переименовать"
+                , new KeyGesture(Key.F2));
+
+        public static readonly RoutedUICommand DeleteSelected = NewCommand(nameof(DeleteSelected)
+                , "Удалить выделеный елемент"
+                , new KeyGesture(Key.Delete, ModifierKeys.Control));
+
+        public static readonly RoutedUICommand DeleteChecked = NewCommand(nameof(DeleteChecked)
+                , "Удалить отмеченные елементы"
+                , new KeyGesture(Key.Delete, ModifierKeys.Control | ModifierKeys.Shift));
+
     }
 }

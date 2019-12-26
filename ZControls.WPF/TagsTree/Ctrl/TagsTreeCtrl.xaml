@@ -37,22 +37,23 @@
                                             <Setter Property="Focusable" Value="False"/>
                                         </Style>
                                     </StackPanel.Resources>
+                                    <Button x:Name="Part_CollapseAllButThis_Btn" Style="{StaticResource FlatButton}"/>
+                                    <Button x:Name="Part_CollapseAll_Btn" Style="{StaticResource FlatButton}"/>
+                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
                                     <ToggleButton x:Name="Part_AutoClearCheckMarks_Btn" Style="{StaticResource FlatToggleButton}"/>
                                     <Button x:Name="Part_ClearAllCheckMarks_Btn" Style="{StaticResource FlatButton}"/>
-                                    <Button x:Name="Part_CollapseAllButThis_Btn" Style="{StaticResource FlatButton}"/>
-                                    <Button x:Name="Part_ExpandAll_Btn" Style="{StaticResource FlatButton}"/>
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
-                                    <Button x:Name="Part_MarkAllAsUndefined_Btn" Style="{StaticResource FlatButton}"/>
                                     <ToggleButton x:Name="Part_InfiniteSearch_Btn" Style="{StaticResource FlatToggleButton}"/>
                                     <Button x:Name="Part_MarkCheckedAsIncludable_Btn" Style="{StaticResource FlatButton}"/>
                                     <Button x:Name="Part_MarkCheckedAsExcludable_Btn" Style="{StaticResource FlatButton}"/>
-                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
-                                    <Button x:Name="Part_RenameSelected_Btn" Style="{StaticResource FlatButton}"/>
-                                    <Button x:Name="Part_AddFolder_Btn" Style="{StaticResource FlatButton}"/>
-                                    <Button x:Name="Part_AddTag_Btn" Style="{StaticResource FlatButton}"/>
+                                    <Button x:Name="Part_MarkAllAsUndefined_Btn" Style="{StaticResource FlatButton}"/>
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
                                     <Button x:Name="Part_Bind_Btn" Style="{StaticResource FlatButton}"/>
                                     <Button x:Name="Part_Unbind_Btn" Style="{StaticResource FlatButton}"/>
+                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
+                                    <Button x:Name="Part_AddTag_Btn" Style="{StaticResource FlatButton}"/>
+                                    <Button x:Name="Part_AddDir_Btn" Style="{StaticResource FlatButton}"/>
+                                    <Button x:Name="Part_RenameSelected_Btn" Style="{StaticResource FlatButton}"/>
                                 </StackPanel>
                             </ScrollViewer>
                             <TreeView x:Name="Part_TagsTree" Grid.Column="0" Grid.Row="1">
@@ -63,7 +64,7 @@
                                         <StackPanel Orientation="Horizontal">
                                             <CheckBox IsChecked="{Binding Path=CheckMark}" Focusable="False" VerticalAlignment="Center"/>
                                             <TextBlock VerticalAlignment="Center">
-                                                <Image Source="/ZControls.WPF;component/Resources/Icons/TagsTreeCtrl_Folder_16x.png" VerticalAlignment="Center"/>
+                                                <Image Source="/ZControls.WPF;component/Resources/Icons/TagsTreeCtrl_Dir_16x.png" VerticalAlignment="Center"/>
                                                 <Run Text="{Binding Path=Name}"/>
                                             </TextBlock>
                                         </StackPanel>
@@ -80,18 +81,17 @@
                                 </TreeView.Resources>
                                 <TreeView.ContextMenu>
                                     <ContextMenu>
-                                        <MenuItem Name="Part_InfiniteSearch_Mnu"/>
-                                        <MenuItem Name="Part_AutoClearCheckMarks_Mnu"/>
-                                        <Separator/>
                                         <MenuItem Name="Part_CollapseAllButThis_Mnu"/>
                                         <MenuItem Name="Part_CollapseAll_Mnu"/>
                                         <MenuItem Name="Part_ExpandAll_Mnu"/>
                                         <Separator/>
+                                        <MenuItem Name="Part_AutoClearCheckMarks_Mnu"/>
                                         <MenuItem Name="Part_ClearAllCheckMarks_Mnu"/>
                                         <MenuItem Name="Part_InvertCheckMark_Mnu"/>
                                         <MenuItem Name="Part_SetCheckMark_Mnu"/>
                                         <MenuItem Name="Part_RemoveCheckMark_Mnu"/>
                                         <Separator/>
+                                        <MenuItem Name="Part_InfiniteSearch_Mnu"/>
                                         <MenuItem Name="Part_MarkCheckedAsIncludable_Mnu"/>
                                         <MenuItem Name="Part_MarkCheckedAsExcludable_Mnu"/>
                                         <MenuItem Name="Part_MarkAllAsUndefined_Mnu"/>
