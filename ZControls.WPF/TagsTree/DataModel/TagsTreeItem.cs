@@ -41,5 +41,67 @@ namespace ZControls.WPF.TagsTree.DataModel
         public void OnPropertyChanged(string propName = "") => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
 
         public override String ToString() => $"[{(CheckMark == null ? "■" : CheckMark == true ? "✔" : "✖")}] {Name}";
+
+        // ----
+
+        public static void SetItemCheckMark(TagsTreeItem treeItem, Boolean originCheckMark)
+        {
+            treeItem.CheckMark = originCheckMark;
+            TagsDir originDir = treeItem as TagsDir;
+            if(originDir != null) SetItemDescendantsCheckMarks(originDir, originCheckMark);
+            TagsDir parentDir = treeItem.ParentDir;
+            if(parentDir != null) SetItemAscendantsCheckMarks(parentDir, originCheckMark);
+        }
+
+        private static void SetItemDescendantsCheckMarks(TagsDir originDir, Boolean originCheckMark)
+        {
+            Stack<TagsTreeItem> stack = new Stack<TagsTreeItem>(originDir.ChildItems);
+            while(stack.Count > 0)
+            {
+                TagsTreeItem curentItem = stack.Pop();
+                curentItem.CheckMark = originCheckMark;
+                TagsDir dir = curentItem as TagsDir;
+                if(dir == null) continue;
+                foreach(var dirItem in dir.ChildItems) stack.Push(dirItem);
+            }
+        }
+
+        private static void SetItemAscendantsCheckMarks(TagsDir parentDir, Boolean originCheckMark)
+        {
+            Boolean? selection = originCheckMark;
+            while(parentDir != null)
+            {
+                if(selection != null)
+                {
+                    Boolean thereAreCheckedItems = false;
+                    Boolean thereAreUncheckedItems = false;
+                    Boolean thereAreUndefinedItems = false;
+
+                    foreach(var item in parentDir.ChildItems)
+                    {
+                        switch(item.CheckMark)
+                        {
+                            case true:
+                                thereAreCheckedItems = true;
+                                break;
+                            case false:
+                                thereAreUncheckedItems = true;
+                                break;
+                            case null:
+                                thereAreUndefinedItems = true;
+                                break;
+                        }
+                        Int32 diferentItemsCount = (thereAreCheckedItems ? 1 : 0) + (thereAreUncheckedItems ? 1 : 0) + (thereAreUndefinedItems ? 1 : 0);
+                        if(diferentItemsCount > 1)
+                        {
+                            selection = null;
+                            break;
+                        }
+                    }
+                }
+                parentDir.CheckMark = selection;
+                parentDir = parentDir.ParentDir as TagsDir;
+            }
+        }
     }
 }

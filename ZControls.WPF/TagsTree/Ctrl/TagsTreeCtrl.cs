@@ -120,7 +120,7 @@ namespace ZControls.WPF.TagsTree.Ctrl
 
 
 
-    #region ■■■■■ ControlParts ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+    #region ■■■■■ ControlParts ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
     public partial class TagsTreeCtrl
     {
         private TreeView        Part_TagsTree;
@@ -166,39 +166,44 @@ namespace ZControls.WPF.TagsTree.Ctrl
         {
             base.OnApplyTemplate();
             Part_TagsTree = FindTemplatePart<TreeView>(nameof(Part_TagsTree));
-            Part_AutoClearCheckMarks_Btn = FindTemplatePart<ToggleButton>(nameof(Part_AutoClearCheckMarks_Btn));
-            Part_CollapseAllButThis_Btn = FindTemplatePart<Button>(nameof(Part_CollapseAllButThis_Btn));
-            Part_CollapseAll_Btn = FindTemplatePart<Button>(nameof(Part_CollapseAll_Btn));
-            Part_ClearAllCheckMarks_Btn = FindTemplatePart<Button>(nameof(Part_ClearAllCheckMarks_Btn));
-            Part_MarkAllAsUndefined_Btn = FindTemplatePart<Button>(nameof(Part_MarkAllAsUndefined_Btn));
-            Part_InfiniteSearch_Btn = FindTemplatePart<ToggleButton>(nameof(Part_InfiniteSearch_Btn));
-            Part_MarkCheckedAsIncludable_Btn = FindTemplatePart<Button>(nameof(Part_MarkCheckedAsIncludable_Btn));
-            Part_MarkCheckedAsExcludable_Btn = FindTemplatePart<Button>(nameof(Part_MarkCheckedAsExcludable_Btn));
-            Part_RenameSelected_Btn = FindTemplatePart<Button>(nameof(Part_RenameSelected_Btn));
-            Part_AddDir_Btn = FindTemplatePart<Button>(nameof(Part_AddDir_Btn));
-            Part_AddTag_Btn = FindTemplatePart<Button>(nameof(Part_AddTag_Btn));
-            Part_Bind_Btn = FindTemplatePart<Button>(nameof(Part_Bind_Btn));
-            Part_Unbind_Btn = FindTemplatePart<Button>(nameof(Part_Unbind_Btn));
             //
-            Part_AddDir_Mnu = FindTemplatePart<MenuItem>(nameof(Part_AddDir_Mnu));
-            Part_AddTag_Mnu = FindTemplatePart<MenuItem>(nameof(Part_AddTag_Mnu));
-            Part_RenameSelected_Mnu = FindTemplatePart<MenuItem>(nameof(Part_RenameSelected_Mnu));
-            Part_DeleteSelected_Mnu = FindTemplatePart<MenuItem>(nameof(Part_DeleteSelected_Mnu));
-            Part_DeleteChecked_Mnu = FindTemplatePart<MenuItem>(nameof(Part_DeleteChecked_Mnu));
+            Part_CollapseAllButThis_Mnu = FindTemplatePart<MenuItem>(nameof(Part_CollapseAllButThis_Mnu));
+            Part_CollapseAllButThis_Btn = FindTemplatePart<Button>(nameof(Part_CollapseAllButThis_Btn));
+            Part_CollapseAll_Mnu = FindTemplatePart<MenuItem>(nameof(Part_CollapseAll_Mnu));
+            Part_CollapseAll_Btn = FindTemplatePart<Button>(nameof(Part_CollapseAll_Btn));
+            Part_ExpandAll_Mnu = FindTemplatePart<MenuItem>(nameof(Part_ExpandAll_Mnu));
+            //
+            Part_AutoClearCheckMarks_Mnu = FindTemplatePart<MenuItem>(nameof(Part_AutoClearCheckMarks_Mnu));
+            Part_AutoClearCheckMarks_Btn = FindTemplatePart<ToggleButton>(nameof(Part_AutoClearCheckMarks_Btn));
+            Part_ClearAllCheckMarks_Mnu = FindTemplatePart<MenuItem>(nameof(Part_ClearAllCheckMarks_Mnu));
+            Part_ClearAllCheckMarks_Btn = FindTemplatePart<Button>(nameof(Part_ClearAllCheckMarks_Btn));
             Part_InvertCheckMark_Mnu = FindTemplatePart<MenuItem>(nameof(Part_InvertCheckMark_Mnu));
             Part_SetCheckMark_Mnu = FindTemplatePart<MenuItem>(nameof(Part_SetCheckMark_Mnu));
             Part_RemoveCheckMark_Mnu = FindTemplatePart<MenuItem>(nameof(Part_RemoveCheckMark_Mnu));
-            Part_ClearAllCheckMarks_Mnu = FindTemplatePart<MenuItem>(nameof(Part_ClearAllCheckMarks_Mnu));
-            Part_AutoClearCheckMarks_Mnu = FindTemplatePart<MenuItem>(nameof(Part_AutoClearCheckMarks_Mnu));
+            //
             Part_InfiniteSearch_Mnu = FindTemplatePart<MenuItem>(nameof(Part_InfiniteSearch_Mnu));
+            Part_InfiniteSearch_Btn = FindTemplatePart<ToggleButton>(nameof(Part_InfiniteSearch_Btn));
             Part_MarkCheckedAsIncludable_Mnu = FindTemplatePart<MenuItem>(nameof(Part_MarkCheckedAsIncludable_Mnu));
+            Part_MarkCheckedAsIncludable_Btn = FindTemplatePart<Button>(nameof(Part_MarkCheckedAsIncludable_Btn));
             Part_MarkCheckedAsExcludable_Mnu = FindTemplatePart<MenuItem>(nameof(Part_MarkCheckedAsExcludable_Mnu));
+            Part_MarkCheckedAsExcludable_Btn = FindTemplatePart<Button>(nameof(Part_MarkCheckedAsExcludable_Btn));
             Part_MarkAllAsUndefined_Mnu = FindTemplatePart<MenuItem>(nameof(Part_MarkAllAsUndefined_Mnu));
+            Part_MarkAllAsUndefined_Btn = FindTemplatePart<Button>(nameof(Part_MarkAllAsUndefined_Btn));
+            //
             Part_Bind_Mnu = FindTemplatePart<MenuItem>(nameof(Part_Bind_Mnu));
+            Part_Bind_Btn = FindTemplatePart<Button>(nameof(Part_Bind_Btn));
             Part_Unbind_Mnu = FindTemplatePart<MenuItem>(nameof(Part_Unbind_Mnu));
-            Part_ExpandAll_Mnu = FindTemplatePart<MenuItem>(nameof(Part_ExpandAll_Mnu));
-            Part_CollapseAll_Mnu = FindTemplatePart<MenuItem>(nameof(Part_CollapseAll_Mnu));
-            Part_CollapseAllButThis_Mnu = FindTemplatePart<MenuItem>(nameof(Part_CollapseAllButThis_Mnu));
+            Part_Unbind_Btn = FindTemplatePart<Button>(nameof(Part_Unbind_Btn));
+            //
+            Part_AddTag_Mnu = FindTemplatePart<MenuItem>(nameof(Part_AddTag_Mnu));
+            Part_AddTag_Btn = FindTemplatePart<Button>(nameof(Part_AddTag_Btn));
+            Part_AddDir_Mnu = FindTemplatePart<MenuItem>(nameof(Part_AddDir_Mnu));
+            Part_AddDir_Btn = FindTemplatePart<Button>(nameof(Part_AddDir_Btn));
+            Part_RenameSelected_Mnu = FindTemplatePart<MenuItem>(nameof(Part_RenameSelected_Mnu));
+            Part_RenameSelected_Btn = FindTemplatePart<Button>(nameof(Part_RenameSelected_Btn));
+            Part_DeleteSelected_Mnu = FindTemplatePart<MenuItem>(nameof(Part_DeleteSelected_Mnu));
+            Part_DeleteChecked_Mnu = FindTemplatePart<MenuItem>(nameof(Part_DeleteChecked_Mnu));
+            //
             //
             SetUpTemplateParts();
         }
@@ -412,6 +417,8 @@ namespace ZControls.WPF.TagsTree.Ctrl
     #region ■■■■■ Properties ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
     public partial class TagsTreeCtrl
     {
+        
+
         #region ————— StringPropProperty ———————————————————————————————————————————————————————————————————————————
 
         public static DependencyProperty StringPropProperty;
@@ -493,12 +500,21 @@ namespace ZControls.WPF.TagsTree.Ctrl
 
         private static void ExpandAll_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            MessageBox.Show($"Command {((RoutedUICommand)e.Command).Text} not implemented");
+            TreeView treeView = (sender as TagsTreeCtrl)?.Part_TagsTree;
+            var items = treeView?.ItemsSource;
+            if(items == null) return;
+            Stack<TreeViewItem> stack = new Stack<TreeViewItem>();
+
+            foreach(var item in items)
+            {
+                TreeViewItem treeViewItem = treeView.ItemContainerGenerator.ContainerFromItem(item) as TreeViewItem;
+                if(treeViewItem != null) treeViewItem.ExpandSubtree();
+            }
         }
 
         private static void ExpandAll_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = false;
+            e.CanExecute = true;
         }
 
         #endregion ————— ExpandAll
@@ -537,12 +553,14 @@ namespace ZControls.WPF.TagsTree.Ctrl
 
         private static void InvertCheckMark_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            MessageBox.Show($"Command {((RoutedUICommand)e.Command).Text} not implemented");
+            TagsTreeItem selectedItem = (sender as TagsTreeCtrl)?.Part_TagsTree?.SelectedItem as TagsTreeItem;
+            if(selectedItem == null) return;
+            TagsTreeItem.SetItemCheckMark(selectedItem, !(selectedItem.CheckMark == true));
         }
 
         private static void InvertCheckMark_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = false;
+            e.CanExecute = true;
         }
 
         #endregion ————— InvertCheckMark
@@ -551,12 +569,14 @@ namespace ZControls.WPF.TagsTree.Ctrl
 
         private static void SetCheckMark_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            MessageBox.Show($"Command {((RoutedUICommand)e.Command).Text} not implemented");
+            TagsTreeItem selectedItem = (sender as TagsTreeCtrl)?.Part_TagsTree?.SelectedItem as TagsTreeItem;
+            if(selectedItem == null) return;
+            TagsTreeItem.SetItemCheckMark(selectedItem, true);
         }
 
         private static void SetCheckMark_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = false;
+            e.CanExecute = true;
         }
 
         #endregion ————— SetCheckMark
@@ -565,12 +585,14 @@ namespace ZControls.WPF.TagsTree.Ctrl
 
         private static void RemoveCheckMark_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            MessageBox.Show($"Command {((RoutedUICommand)e.Command).Text} not implemented");
+            TagsTreeItem selectedItem = (sender as TagsTreeCtrl)?.Part_TagsTree?.SelectedItem as TagsTreeItem;
+            if(selectedItem == null) return;
+            TagsTreeItem.SetItemCheckMark(selectedItem, false);
         }
 
         private static void RemoveCheckMark_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = false;
+            e.CanExecute = true;
         }
 
         #endregion ————— RemoveCheckMark
